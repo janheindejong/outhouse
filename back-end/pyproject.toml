@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "outhouse"
+version = "0.1.0"
+description = ""
+authors = ["Jan Hein de Jong <janhein.dejong@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.89.1"
+uvicorn = "^0.20.0"
+
+[tool.poe.tasks]
+format = [
+    { cmd = "autoflake8 ." },
+    { cmd = "isort ." },
+    { cmd = "black ." },
+]
+test = """
+    mypy .
+"""
+serve = "uvicorn outhouse.main:app --port 8000 --reload"
+
+[tool.poetry.group.dev.dependencies]
+autoflake8 = "^0.4.0"
+isort = "^5.12.0"
+black = "^22.12.0"
+mypy = "^0.991"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
