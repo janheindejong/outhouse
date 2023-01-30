@@ -4,10 +4,11 @@ FROM python:3.11-slim
 RUN pip install poetry \
     && poetry config virtualenvs.create false
 
+# Install dependencies
 COPY poetry.lock pyproject.toml ./ 
-
 RUN poetry install --without dev 
 
+# Copy source
 COPY outhouse outhouse 
 
 EXPOSE 8000
