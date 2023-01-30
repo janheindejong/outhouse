@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: outhouse
-        image: janheindejong/outhouse:0.1
+        image: janheindejong/outhouse-api:0.1
         ports:
         - containerPort: 8000
         resources:
