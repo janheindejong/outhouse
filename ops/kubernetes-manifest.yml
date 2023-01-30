@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: outhouse
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outhouse
+  namespace: outhouse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outhouse
+  template:
+    metadata:
+      labels:
+        app: outhouse
+    spec:
+      containers:
+      - name: outhouse
+        image: janheindejong/outhouse:0.1
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outhouse
+  namespace: outhouse
+spec:
+  type: ClusterIP
+  selector:
+    app: outhouse
+  ports:
+    - protocol: TCP
+      port: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: outhouse
+  namespace: outhouse
+spec:
+  rules:
+  - host: www.onsvakantiehuisje.nl
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: outhouse
+              port:
+                number: 8000
