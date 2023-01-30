@@ -11,4 +11,4 @@ RUN poetry install --without dev
 COPY outhouse outhouse 
 
 EXPOSE 8000
-CMD ["uvicorn", "outhouse.main:app"]
+CMD ["uvicorn", "outhouse.main:app", "--port", "8000"]

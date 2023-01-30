@@ -6,26 +6,27 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: outhouse
+  name: outhouse-api
   namespace: outhouse
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: outhouse
+      app: outhouse-api
   template:
     metadata:
       labels:
-        app: outhouse
+        app: outhouse-api
     spec:
       containers:
-      - name: outhouse
-        image: janheindejong/outhouse-api:0.3-arm64
+      - name: outhouse-api
+        image: janheindejong/outhouse-api:0.4-arm64
         ports:
         - containerPort: 8000
+          name: http-port
         resources:
           limits:
-            cpu: "500m"
+            cpu: 500m
             memory: 500Mi
           requests:
             cpu: 500m
@@ -34,20 +35,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: outhouse
+  name: outhouse-api
   namespace: outhouse
 spec:
   type: ClusterIP
   selector:
-    app: outhouse
+    app: outhouse-api
   ports:
     - protocol: TCP
       port: 8000
+      targetPort: http-port
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: outhouse
+  name: outhouse-api
   namespace: outhouse
 spec:
   rules:
@@ -58,6 +60,6 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: outhouse
+              name: outhouse-api
               port:
                 number: 8000
