@@ -1,13 +1,10 @@
-import logging
-from contextlib import AbstractContextManager, contextmanager
+from contextlib import contextmanager
 from datetime import datetime
-from typing import Callable, Generator, Iterator
+from typing import Generator
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session, relationship, scoped_session, sessionmaker
-
-logger = logging.getLogger()
+from sqlalchemy.orm import Session, relationship, sessionmaker
 
 Base = declarative_base()
 
@@ -27,18 +24,17 @@ class Booking(Base):
     startDate = Column(DateTime)
     endDate = Column(DateTime)
     userId = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User", back_populates="bookings")
 
 
 class DbHandler:
     def __init__(self, db_url: str) -> None:
-        self._session_factory = scoped_session(
-            sessionmaker(
-                autocommit=False,
-                autoflush=False,
-                bind=create_engine(
-                    db_url, connect_args={"check_same_thread": False}, echo=False
-                ),
-            )
+        self._session_factory = sessionmaker(
+            autocommit=False,
+            autoflush=False,
+            bind=create_engine(
+                db_url, connect_args={"check_same_thread": False}, echo=False
+            ),
         )
 
     @contextmanager
@@ -47,41 +43,38 @@ class DbHandler:
         try:
             yield session
         except Exception:
-            logger.exception("Session rollback because of exception")
             session.rollback()
             raise
         finally:
             session.close()
 
 
-class AbstractRepository:
-    def __init__(self, db: DbHandler) -> None:
-        self._db = db
+class AbstractService:
+    def __init__(self, session: Session) -> None:
+        self._session = session
 
 
-class UserRepository(AbstractRepository):
+class UserService(AbstractService):
     def get_all(self) -> list[User]:
-        with self._db.session() as db:
-            return db.query(User).all()
+        return self._session.query(User).all()
 
-    def create(self, name) -> User:
+    def create(self, name: str) -> User:
         user = User(name=name)
-        with self._db.session() as db:
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-            return user
+        self._session.add(user)
+        self._session.commit()
+        self._session.refresh(user)
+        return user
 
 
-class BookingRepository(AbstractRepository):
-    def get_all(self) -> list[Booking]:
-        with self._db.session() as db:
-            return db.query(Booking).all()
+class CalendarService(AbstractService):
+    def get_bookings(self) -> list[Booking]:
+        return self._session.query(Booking).all()
 
-    def create(self, startDate: datetime, endDate: datetime, userId: int) -> Booking:
+    def create_booking(
+        self, startDate: datetime, endDate: datetime, userId: int
+    ) -> Booking:
         booking = Booking(startDate=startDate, endDate=endDate, userId=userId)
-        with self._db.session() as db:
-            db.add(booking)
-            db.commit()
-            db.refresh(booking)
-            return booking
+        self._session.add(booking)
+        self._session.commit()
+        self._session.refresh(booking)
+        return booking
