@@ -8,14 +8,20 @@ class UserIn(BaseModel):
 
 
 class User(UserIn):
-    userId: str
+    id: int
+
+    class Config:
+        orm_mode = True
 
 
 class BookingIn(BaseModel):
     startDate: datetime
     endDate: datetime
-    userId: str
+    userId: int
+
+    class Config:
+        orm_mode = True
 
 
 class Booking(BookingIn):
-    bookingId: int
+    id: int
