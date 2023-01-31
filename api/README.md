@@ -24,7 +24,7 @@ A debug launcher is also configured for VSCode - simply hit F5.
 No automated CI yet, just building and pushing yourself. To build and run on your machine, do: 
 
 ```
-$VERSION = 0.5
+$VERSION = git rev-parse --short HEAD
 docker build --tag "janheindejong/outhouse-api:$VERSION" .
 docker run -it --rm -p 8000:8000 --mount type=bind,source="$(pwd)/data",target=/app/data "janheindejong/outhouse-api:$VERSION"
 ```
@@ -32,7 +32,7 @@ docker run -it --rm -p 8000:8000 --mount type=bind,source="$(pwd)/data",target=/
 To build and push for usage, run:
 
 ``` 
-$VERSION = 0.5
+$VERSION = git rev-parse --short HEAD
 docker build --tag "janheindejong/outhouse-api:$VERSION-arm64" --platform arm64 .
 docker push "janheindejong/outhouse-api:$VERSION-arm64"
 ```
