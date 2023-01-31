@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 
 from .db import DbHandler
 
-db_handler = DbHandler(os.getenv("OUTHOUSE_DB_URL", "sqlite:///data/db.sqlite"))
+db_url = os.getenv("DB_URL", "sqlite:///data/db.sqlite")
+
+db_handler = DbHandler(db_url)
 
 
 def get_db_session() -> Session:
