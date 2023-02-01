@@ -21,18 +21,9 @@ A debug launcher is also configured for VSCode - simply hit F5.
 
 ## Building and pushing 
 
-No automated CI yet, just building and pushing yourself. To build and run on your machine, do: 
+I've setup some CI scripts, and linked them to poetry through poe. They require docker, and bash. 
 
 ```
-$VERSION = git rev-parse --short HEAD
-docker build --tag "janheindejong/outhouse-api:$VERSION" .
-docker run -it --rm -p 8000:8000 --mount type=bind,source="$(pwd)/data",target=/app/data "janheindejong/outhouse-api:$VERSION"
-```
-
-To build and push for usage, run:
-
-``` 
-$VERSION = git rev-parse --short HEAD
-docker build --tag "janheindejong/outhouse-api:$VERSION-arm64" --platform arm64 .
-docker push "janheindejong/outhouse-api:$VERSION-arm64"
+poetry poe build  # Builds an image on your machine, that you can test locally
+poetry poe publish  # Runs tests, creates an ARM64 image, and pushes it to Docker Hub
 ```
