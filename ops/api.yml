@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: outhouse
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outhouse-api
+  namespace: outhouse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outhouse-api
+  template:
+    metadata:
+      labels:
+        app: outhouse-api
+    spec:
+      containers:
+      - name: outhouse-api
+        image: janheindejong/outhouse-api:8392990-arm64
+        env:
+        - name: DB_URL
+          value: "mysql+pymysql://root:mysql@mysql.mysql"
+        ports:
+        - containerPort: 8000
+          name: http-port
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+      initContainers:
+      - name: db-init 
+        image: janheindejong/outhouse-api:8392990-arm64
+        env:
+        - name: DB_URL
+          value: "mysql+pymysql://root:mysql@mysql.mysql"
+          command: ["sh", "-c", "alembic upgrade head"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outhouse-api
+  namespace: outhouse
+spec:
+  type: ClusterIP
+  selector:
+    app: outhouse-api
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: http-port

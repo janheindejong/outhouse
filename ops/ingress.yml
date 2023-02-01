@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: outhouse-api
+  namespace: outhouse
+spec:
+  rules:
+  - host: onsfamiliehuisje.nl
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: outhouse-api
+              port:
+                number: 8000
