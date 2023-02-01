@@ -37,10 +37,11 @@ spec:
       initContainers:
       - name: db-init 
         image: janheindejong/outhouse-api:8392990-arm64
+        command: ["sh", "-c", "alembic upgrade head"]
         env:
         - name: DB_URL
           value: "mysql+pymysql://root:mysql@mysql.mysql"
-          command: ["sh", "-c", "alembic upgrade head"]
+          
 ---
 apiVersion: v1
 kind: Service
