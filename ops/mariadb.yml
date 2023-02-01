@@ -24,6 +24,8 @@ spec:
         env:
         - name: MARIADB_ROOT_PASSWORD
           value: mariadb
+        - name: MARIADB_DATABASE 
+          value: outhouse
         ports:
         - containerPort: 3306
         resources:
