@@ -1,16 +1,19 @@
 #!/bin/bash
 
-TAG=$(git rev-parse --short HEAD) &&
-docker build --tag "janheindejong/outhouse-api:$TAG" . &&
+set -e
+
+TAG=$(git rev-parse --short HEAD) 
+REPO="janheindejong/outhouse-api"
+docker build --tag "$REPO:$TAG" . 
 cat << EOF 
-Successfully built image janheindejong/outhouse-api:$TAG 
+Successfully built image $REPO:$TAG 
 You run a container based off the image locally with the following command (PowerShell):  
 
     docker run \`
     -it --rm \`
     -p 8000:8000 \`
     --mount type=bind,source="\$(pwd)/data",target=/app/data \`
-    janheindejong/outhouse-api:$TAG
+    $REPO:$TAG
 
 ...or for posix: 
 
@@ -18,5 +21,5 @@ You run a container based off the image locally with the following command (Powe
     -it --rm \\
     -p 8000:8000 \\
     --mount type=bind,source="\$(pwd)/data",target=/app/data \\
-    janheindejong/outhouse-api:$TAG
+    $REPO:$TAG
 EOF

@@ -23,25 +23,15 @@ autoflake = "^2.0.0"
 plugins = "sqlmypy"
 
 [tool.poe.tasks]
-format = [
-    { cmd = "autoflake --remove-all-unused-imports -r --in-place tests/. outhouse/." },
-    { cmd = "isort tests/. outhouse/." },
-    { cmd = "black tests/. outhouse/." },
-]
-test = [
-    { cmd = "mypy outhouse/." },
-    { cmd = "autoflake -r --check tests/. outhouse/." },
-    { cmd = "black --check tests/. outhouse/." }
-]
+format = { shell = "scripts/format.sh"}
+test = { shell = "scripts/test.sh"}
 serve = "uvicorn outhouse.main:app --port 8000 --reload"
 build = { shell = "scripts/build.sh" }
 publish = [
     { shell = "scripts/check-commit.sh" }, 
     { ref = "test" }, 
-    { ref = "build" }, 
-    { shell = "scripts/publish.sh" }    
+    { shell = "scripts/build-and-publish.sh" }    
 ]
-
 
 [build-system]
 requires = ["poetry-core"]
