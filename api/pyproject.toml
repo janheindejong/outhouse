@@ -29,17 +29,17 @@ format = [
     { cmd = "black tests/. outhouse/." },
 ]
 test = [
-    { cmd = "mypy outhouse/."},
-    { cmd = "autoflake -r --check tests/. outhouse/."},
-    { cmd = "black --check tests/. outhouse/."}
+    { cmd = "mypy outhouse/." },
+    { cmd = "autoflake -r --check tests/. outhouse/." },
+    { cmd = "black --check tests/. outhouse/." }
 ]
 serve = "uvicorn outhouse.main:app --port 8000 --reload"
-build = {shell = "scripts/build.sh"}
+build = { shell = "scripts/build.sh" }
 publish = [
-    
-    { shell = ""}
-    { ref = "test"}, 
-    { ref = "build"}    
+    { shell = "scripts/check-commit.sh" }, 
+    { ref = "test" }, 
+    { ref = "build" }, 
+    { shell = "scripts/publish.sh" }    
 ]
 
 

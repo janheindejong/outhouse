@@ -1,3 +1,5 @@
+#!/bin/bash
+
 TAG=$(git rev-parse --short HEAD) &&
 docker build --tag "janheindejong/outhouse-api:$TAG" . &&
 cat << EOF 
