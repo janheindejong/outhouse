@@ -23,25 +23,24 @@ spec:
         image: janheindejong/outhouse-api:640fa84-arm64
         env:
         - name: DB_URL
-          value: "mysql+pymysql://root:mysql@mysql.mysql"
+          value: "mariadb+pymysql://root:mariadb@mariadb.mariadb/outhouse"
         ports:
         - containerPort: 8000
           name: http-port
         resources:
           limits:
             cpu: 500m
-            memory: 500Mi
+            memory: 150Mi
           requests:
             cpu: 500m
-            memory: 500Mi
+            memory: 150Mi
       initContainers:
       - name: db-init 
         image: janheindejong/outhouse-api:640fa84-arm64
         command: ["sh", "-c", "alembic upgrade head"]
         env:
         - name: DB_URL
-          value: "mysql+pymysql://root:mysql@mysql.mysql"
-          
+          value: "mariadb+pymysql://root:mariadb@mariadb.mariadb/outhouse"    
 ---
 apiVersion: v1
 kind: Service
