@@ -32,9 +32,7 @@ class DbHandler:
         self._session_factory = sessionmaker(
             autocommit=False,
             autoflush=False,
-            bind=create_engine(
-                db_url, connect_args={"check_same_thread": False}, echo=False
-            ),
+            bind=create_engine(db_url, echo=False),
         )
 
     @contextmanager
