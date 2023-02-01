@@ -35,6 +35,12 @@ test = [
 ]
 serve = "uvicorn outhouse.main:app --port 8000 --reload"
 
+# Build -> create image, and print command how to run it 
+# Publish -> test, build image, and publish
+
+
+build = {shell = "scripts/build.sh"}
+
 
 [build-system]
 requires = ["poetry-core"]
