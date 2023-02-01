@@ -36,6 +36,7 @@ test = [
 serve = "uvicorn outhouse.main:app --port 8000 --reload"
 build = {shell = "scripts/build.sh"}
 publish = [
+    
     { shell = ""}
     { ref = "test"}, 
     { ref = "build"}    
