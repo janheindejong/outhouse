@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: outhouse-api
-        image: janheindejong/outhouse-api:8392990-arm64
+        image: janheindejong/outhouse-api:640fa84-arm64
         env:
         - name: DB_URL
           value: "mysql+pymysql://root:mysql@mysql.mysql"
@@ -36,7 +36,7 @@ spec:
             memory: 500Mi
       initContainers:
       - name: db-init 
-        image: janheindejong/outhouse-api:8392990-arm64
+        image: janheindejong/outhouse-api:640fa84-arm64
         command: ["sh", "-c", "alembic upgrade head"]
         env:
         - name: DB_URL
