@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from .db import AbstractService
-from .models import Booking, User
+from .models import Booking, User, Outhouse
 
 
 class UserService(AbstractService):
@@ -14,6 +14,18 @@ class UserService(AbstractService):
         self._session.commit()
         self._session.refresh(user)
         return user
+
+
+class OuthouseService(AbstractService):
+    def get_all(self) -> list[User]:
+        return self._session.query(Outhouse).all()
+
+    def create(self, name: str) -> Outhouse:
+        outhouse = Outhouse(name=name)
+        self._session.add(outhouse)
+        self._session.commit()
+        self._session.refresh(outhouse)
+        return outhouse
 
 
 class CalendarService(AbstractService):
