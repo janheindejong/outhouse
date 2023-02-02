@@ -1,16 +1,25 @@
 from contextlib import contextmanager
 from typing import Generator
 
+from loguru import logger
 from sqlalchemy import create_engine, event
 from sqlalchemy.engine import Engine
+from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm import Session, sessionmaker
+
+# SQLite by default doesn't enforce foreign keys. We can set this behavior like so,
+# but it is a bit of a workaround, and is not compatible with other DB's, hence the
+# exceptionhandling.
 
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA foreign_keys=ON")
-    cursor.close()
+    try:
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+    except ProgrammingError:
+        logger.info("Received programming error; nothing to be afraid of.")
 
 
 class DbHandler:
