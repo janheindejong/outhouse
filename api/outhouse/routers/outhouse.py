@@ -9,15 +9,20 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[Outhouse])
-def get_bookings(session: Session = Depends(get_db_session)):
+def get_all(session: Session = Depends(get_db_session)):
     return OuthouseService(session).get_all()
 
 
 @router.post("/", response_model=Outhouse)
-def post_booking(outhouse: OuthouseIn, session: Session = Depends(get_db_session)):
+def post(outhouse: OuthouseIn, session: Session = Depends(get_db_session)):
     return OuthouseService(session).create(name=outhouse.name)
 
 
 @router.get("/{id}", response_model=Outhouse)
-def get_bookings(id: int, session: Session = Depends(get_db_session)):
+def get(id: int, session: Session = Depends(get_db_session)):
     return OuthouseService(session).get(id)
+
+
+@router.delete("/{id}", response_model=Outhouse)
+def delete(id: int, session: Session = Depends(get_db_session)):
+    return OuthouseService(session).delete(id)

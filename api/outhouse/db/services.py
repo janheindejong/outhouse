@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.orm import selectinload
 
@@ -10,7 +11,7 @@ class UserService(AbstractService):
     def get_all(self) -> list[User]:
         return self._session.query(User).all()
 
-    def get(self, id: int) -> User:
+    def get(self, id: int) -> Optional[User]:
         return self._session.query(User).options(selectinload(User.bookings)).get(id)
 
     def create(self, name: str) -> User:
@@ -20,12 +21,18 @@ class UserService(AbstractService):
         self._session.refresh(user)
         return user
 
+    def delete(self, id: int) -> Optional[User]:
+        user = self._session.query(User).get(id)
+        self._session.delete(user)
+        self._session.commit()
+        return user
+
 
 class OuthouseService(AbstractService):
     def get_all(self) -> list[Outhouse]:
         return self._session.query(Outhouse).all()
 
-    def get(self, id: int) -> Outhouse:
+    def get(self, id: int) -> Optional[Outhouse]:
         return (
             self._session.query(Outhouse)
             .options(selectinload(Outhouse.bookings))
@@ -37,6 +44,12 @@ class OuthouseService(AbstractService):
         self._session.add(outhouse)
         self._session.commit()
         self._session.refresh(outhouse)
+        return outhouse
+
+    def delete(self, id: int) -> Optional[Outhouse]:
+        outhouse = self._session.query(Outhouse).get(id)
+        self._session.delete(outhouse)
+        self._session.commit()
         return outhouse
 
 
@@ -59,4 +72,10 @@ class CalendarService(AbstractService):
         self._session.add(booking)
         self._session.commit()
         self._session.refresh(booking)
+        return booking
+
+    def delete_booking(self, bookingId: int) -> Optional[Booking]:
+        booking = self._session.query(Booking).get(bookingId)
+        self._session.delete(booking)
+        self._session.commit()
         return booking

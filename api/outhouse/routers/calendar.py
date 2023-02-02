@@ -23,3 +23,10 @@ def post_booking(
         userId=booking.userId,
         outhouseId=outhouseId,
     )
+
+
+@router.delete("/booking/{id}", response_model=Booking)
+def delete_booking(
+    bookingId: int, outhouseId: int, session: Session = Depends(get_db_session)
+):
+    return CalendarService(session).delete_booking(bookingId)

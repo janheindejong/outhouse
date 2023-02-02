@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from ..db.services import UserService, CalendarService
+from ..db.services import UserService
 from .dependencies import get_db_session
-from .schemas import User, UserIn, Booking
+from .schemas import User, UserIn
 
 router = APIRouter()
 
 
 @router.get("/", response_model=list[User])
-def get(session: Session = Depends(get_db_session)):
+def get_all(session: Session = Depends(get_db_session)):
     return UserService(session).get_all()
 
 
@@ -22,3 +22,7 @@ def post(user: UserIn, session: Session = Depends(get_db_session)):
 def get(id: int, session: Session = Depends(get_db_session)):
     return UserService(session).get(id)
 
+
+@router.delete("/{id}", response_model=User)
+def delete(id: int, session: Session = Depends(get_db_session)):
+    return UserService(session).delete(id)
