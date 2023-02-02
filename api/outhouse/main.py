@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from .config import DB_URL
 from .db.db import DbHandler
-from .routers.root import router
+from .api.routers.root import router
 
 
 def get_app() -> FastAPI:

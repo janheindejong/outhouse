@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from ..db.services import OuthouseService
-from .dependencies import get_db_session
-from .schemas import Outhouse, OuthouseIn
+from ...db.services import OuthouseService
+from ..dependencies import get_db_session
+from ..schemas import Outhouse, OuthouseIn
 
 router = APIRouter()
 

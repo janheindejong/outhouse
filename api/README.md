@@ -4,7 +4,7 @@ Very basic back-end API, for now it just handles users and calender end-points.
 
 ## Structure 
 
-The configuration of the API is found in [`outhouse/routers`](./outhouse/routers/). Each top-level end-point has its own `*.py` file, containing the definition of the end-point. 
+The configuration of the API is found in [`outhouse/api/routers`](./outhouse/api/routers/). Each top-level end-point has its own `*.py` file, containing the definition of the end-point. Schemas can be found in [`outhouse/api/schemas.py`](./outhouse/api/schemas.py). 
 
 ## Developing 
 
