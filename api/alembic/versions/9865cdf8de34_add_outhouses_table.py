@@ -31,7 +31,16 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("user_id", "outhouse_id"), 
     )
 
-    op.add_column("bookings", sa.Column("outhouseId", sa.Integer(), nullable=False))
+    op.drop_table("bookings")
+    op.create_table(
+        "bookings",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("startDate", sa.DateTime(), nullable=False),
+        sa.Column("endDate", sa.DateTime(), nullable=False),
+        sa.Column("userId", sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
+        sa.Column("outhouseId", sa.Integer(), sa.ForeignKey("outhouses.id"), nullable=False),
+        sa.PrimaryKeyConstraint("id"),
+    )
 
 
 def downgrade() -> None:

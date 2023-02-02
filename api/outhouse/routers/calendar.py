@@ -21,6 +21,7 @@ class BookingIn(BaseModel):
 class Booking(BookingIn):
     id: int
     outhouseId: int
+    user: User
 
 
 router = APIRouter()

@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from sqlalchemy.orm import selectinload
+
 from .db import AbstractService
 from .models import Booking, Outhouse, User
 
@@ -31,7 +33,10 @@ class OuthouseService(AbstractService):
 class CalendarService(AbstractService):
     def get_bookings(self, outhouseId: int) -> list[Booking]:
         return (
-            self._session.query(Booking).filter(Booking.outhouseId == outhouseId).all()
+            self._session.query(Booking)
+            .options(selectinload(Booking.user))
+            .filter(Booking.outhouseId == outhouseId)
+            .all()
         )
 
     def create_booking(
