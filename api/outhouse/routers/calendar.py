@@ -1,35 +1,16 @@
-from datetime import datetime
-
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ..db.services import CalendarService
 from .dependencies import get_db_session
-from .user import User
-
-
-class BookingIn(BaseModel):
-    startDate: datetime
-    endDate: datetime
-    userId: int
-
-    class Config:
-        orm_mode = True
-
-
-class Booking(BookingIn):
-    id: int
-    outhouseId: int
-    user: User
-
+from .schemas import Booking, BookingIn
 
 router = APIRouter()
 
 
 @router.get("/booking", response_model=list[Booking])
 def get_bookings(outhouseId: int, session: Session = Depends(get_db_session)):
-    return CalendarService(session).get_bookings(outhouseId)
+    return CalendarService(session).get_bookings_by_outhouse_id(outhouseId)
 
 
 @router.post("/booking", response_model=Booking)

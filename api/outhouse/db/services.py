@@ -10,6 +10,9 @@ class UserService(AbstractService):
     def get_all(self) -> list[User]:
         return self._session.query(User).all()
 
+    def get(self, id: int) -> User:
+        return self._session.query(User).options(selectinload(User.bookings)).get(id)
+
     def create(self, name: str) -> User:
         user = User(name=name)
         self._session.add(user)
@@ -19,8 +22,15 @@ class UserService(AbstractService):
 
 
 class OuthouseService(AbstractService):
-    def get_all(self) -> list[User]:
+    def get_all(self) -> list[Outhouse]:
         return self._session.query(Outhouse).all()
+
+    def get(self, id: int) -> Outhouse:
+        return (
+            self._session.query(Outhouse)
+            .options(selectinload(Outhouse.bookings))
+            .get(id)
+        )
 
     def create(self, name: str) -> Outhouse:
         outhouse = Outhouse(name=name)
@@ -31,10 +41,11 @@ class OuthouseService(AbstractService):
 
 
 class CalendarService(AbstractService):
-    def get_bookings(self, outhouseId: int) -> list[Booking]:
+    def get_bookings_by_outhouse_id(self, outhouseId: int) -> list[Booking]:
         return (
             self._session.query(Booking)
             .options(selectinload(Booking.user))
+            .options(selectinload(Booking.outhouse))
             .filter(Booking.outhouseId == outhouseId)
             .all()
         )

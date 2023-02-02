@@ -1,21 +1,9 @@
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ..db.services import OuthouseService
 from .dependencies import get_db_session
-
-
-class OuthouseIn(BaseModel):
-    name: str
-
-
-class Outhouse(OuthouseIn):
-    id: int
-
-    class Config:
-        orm_mode = True
-
+from .schemas import Outhouse, OuthouseIn
 
 router = APIRouter()
 
@@ -28,3 +16,8 @@ def get_bookings(session: Session = Depends(get_db_session)):
 @router.post("/", response_model=Outhouse)
 def post_booking(outhouse: OuthouseIn, session: Session = Depends(get_db_session)):
     return OuthouseService(session).create(name=outhouse.name)
+
+
+@router.get("/{id}", response_model=Outhouse)
+def get_bookings(id: int, session: Session = Depends(get_db_session)):
+    return OuthouseService(session).get(id)
