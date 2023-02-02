@@ -20,19 +20,24 @@ class BookingIn(BaseModel):
 
 class Booking(BookingIn):
     id: int
-    user: User
+    outhouseId: int
 
 
 router = APIRouter()
 
 
 @router.get("/booking", response_model=list[Booking])
-def get_bookings(session: Session = Depends(get_db_session)):
-    return CalendarService(session).get_bookings()
+def get_bookings(outhouseId: int, session: Session = Depends(get_db_session)):
+    return CalendarService(session).get_bookings(outhouseId)
 
 
 @router.post("/booking", response_model=Booking)
-def post_booking(booking: BookingIn, session: Session = Depends(get_db_session)):
+def post_booking(
+    outhouseId: int, booking: BookingIn, session: Session = Depends(get_db_session)
+):
     return CalendarService(session).create_booking(
-        startDate=booking.startDate, endDate=booking.endDate, userId=booking.userId
+        startDate=booking.startDate,
+        endDate=booking.endDate,
+        userId=booking.userId,
+        outhouseId=outhouseId,
     )

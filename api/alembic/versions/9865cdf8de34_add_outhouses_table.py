@@ -31,6 +31,8 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("user_id", "outhouse_id"), 
     )
 
+    op.add_column("bookings", sa.Column("outhouseId", sa.Integer(), nullable=False))
+
 
 def downgrade() -> None:
     op.drop_table("outhouses")
