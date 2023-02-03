@@ -1,43 +1,51 @@
-from __future__ import annotations
-
 from datetime import datetime
 
 from pydantic import BaseModel
 
 
-class UserIn(BaseModel):
+class UserBase(BaseModel):
     name: str
 
 
-class User(UserIn):
+class UserIn(UserBase):
+    ...
+
+
+class UserInDB(UserBase):
     id: int
 
     class Config:
         orm_mode = True
 
 
-class OuthouseIn(BaseModel):
+class OuthouseBase(BaseModel):
     name: str
 
 
-class Outhouse(OuthouseIn):
+class OuthouseIn(OuthouseBase):
+    ...
+
+
+class OuthouseInDB(OuthouseBase):
     id: int
 
     class Config:
         orm_mode = True
 
 
-class BookingIn(BaseModel):
+class BookingBase(BaseModel):
     startDate: datetime
     endDate: datetime
     userId: int
+    outhouseId: int
 
     class Config:
         orm_mode = True
 
 
-class Booking(BookingIn):
+class BookingIn(BookingBase):
+    ...
+
+
+class BookingInDB(BookingBase):
     id: int
-    outhouseId: int
-    user: User
-    outhouse: Outhouse

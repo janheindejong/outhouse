@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
+from .api.routers.root import router
 from .config import DB_URL
 from .db.db import DbHandler
-from .api.routers.root import router
 
 
 def get_app() -> FastAPI:

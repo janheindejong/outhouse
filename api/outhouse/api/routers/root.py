@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from . import calendar, outhouse, user
+from . import booking, outhouse, user
 
 router = APIRouter()
 
@@ -12,4 +12,4 @@ def root():
 
 router.include_router(user.router, prefix="/user")
 router.include_router(outhouse.router, prefix="/outhouse")
-router.include_router(calendar.router, prefix="/outhouse/{outhouseId}/calendar")
+router.include_router(booking.router, prefix="/booking")
