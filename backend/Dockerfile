@@ -1,10 +1,19 @@
+FROM python:3.11-slim AS requirements
+
+# Install poetry 
+RUN pip install poetry
+
+# Create requirements.txt
+COPY pyproject.toml poetry.lock .
+RUN poetry export -o /requirements.txt
+
+# ---- PROD STAGE ----
 FROM python:3.11-slim
 
-# Set workdir to isolate files from 
 WORKDIR /app
+COPY --from=requirements /requirements.txt ./
 
 # Install dependencies
-COPY requirements.txt requirements.txt 
 RUN pip install -r requirements.txt --root-user-action=ignore --no-cache-dir
 
 # Copy sources

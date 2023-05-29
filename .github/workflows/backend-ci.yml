@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths: 
-      - backend
+      - 'backend/**'
   pull_request:
     branches:    
       - main
     paths: 
-      - backend
+      - 'backend/**'
 
 jobs:
   test:
@@ -51,17 +51,6 @@ jobs:
       # Checkout repository 
       - name: Checkout
         uses: actions/checkout@v3
-
-      # Setup Python environment
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11' 
-      - name: Install Poetry
-        run: curl -sSL https://install.python-poetry.org | python3 -
-
-      # Create requirements.txt file, to be copied during Docker build
-      - name: Export requirements.txt 
-        run: poetry export -o requirements.txt
 
       # Setup Docker environment
       - name: Login to Docker Hub

@@ -5,9 +5,7 @@ set -e
 TAG=$(git rev-parse --short HEAD) 
 REPO="janheindejong/outhouse-api"
 
-poetry export -o requirements.txt
 docker build --tag "$REPO:$TAG" . 
-rm requirements.txt
 
 cat << EOF 
 Successfully built image $REPO:$TAG 
