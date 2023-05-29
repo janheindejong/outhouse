@@ -25,8 +25,11 @@ target_metadata = None
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-# Manually set DB url 
-config.set_main_option('sqlalchemy.url', os.getenv("DB_URL", "sqlite:///data/db.sqlite?check_same_thread=false"))
+# Manually set DB url
+config.set_main_option(
+    "sqlalchemy.url",
+    os.getenv("DB_URL", "sqlite:///data/db.sqlite?check_same_thread=false"),
+)
 
 
 def run_migrations_offline() -> None:

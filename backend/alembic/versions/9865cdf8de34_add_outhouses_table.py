@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9865cdf8de34'
-down_revision = 'db36e8d2ddf6'
+revision = "9865cdf8de34"
+down_revision = "db36e8d2ddf6"
 branch_labels = None
 depends_on = None
 
@@ -28,7 +28,7 @@ def upgrade() -> None:
         "user_outhouse_association_table",
         sa.Column("user_id", sa.Integer(), sa.ForeignKey("users.id")),
         sa.Column("outhouse_id", sa.Integer(), sa.ForeignKey("outhouses.id")),
-        sa.PrimaryKeyConstraint("user_id", "outhouse_id"), 
+        sa.PrimaryKeyConstraint("user_id", "outhouse_id"),
     )
 
     op.drop_table("bookings")
@@ -38,7 +38,9 @@ def upgrade() -> None:
         sa.Column("startDate", sa.DateTime(), nullable=False),
         sa.Column("endDate", sa.DateTime(), nullable=False),
         sa.Column("userId", sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
-        sa.Column("outhouseId", sa.Integer(), sa.ForeignKey("outhouses.id"), nullable=False),
+        sa.Column(
+            "outhouseId", sa.Integer(), sa.ForeignKey("outhouses.id"), nullable=False
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
 
@@ -46,4 +48,3 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_table("outhouses")
     op.drop_table("user_outhouse_association_table")
-
