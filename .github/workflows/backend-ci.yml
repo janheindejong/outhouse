@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  backend-ci:
+  test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,12 +23,32 @@ jobs:
           python-version: '3.11' 
       - name: Install Poetry
         run: curl -sSL https://install.python-poetry.org | python3 -
+
+      # Install dependencies
       - name: Install dependencies 
         run: poetry install --sync
 
       # Run tests
       - name: Run tests 
         run: poetry run scripts/test.sh 
+
+  build-push-docker-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+
+      # Checkout repository 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup Python environment
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+      - name: Install Poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
 
       # Build and push Docker image
       - name: Export requirements.txt 
