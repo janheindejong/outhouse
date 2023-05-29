@@ -4,7 +4,7 @@ Outhouse is a web-based appt that allows you and your family members to manage e
 
 ## Architecture
 
-The app has a pretty basic setup, with a front-end, a back-end, and a SQL database. For now, I deploy it on my Raspberry Pi based Kubernetes cluster; in future, I might migrate this to AWS or GCP. 
+The app has a pretty basic setup, with a front-end, a back-end, and an SQL database. For now, I deploy it on my Raspberry Pi based Kubernetes cluster; in future, I might migrate this to AWS or GCP. 
 
 ```mermaid 
 flowchart LR
