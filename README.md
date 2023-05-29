@@ -18,9 +18,10 @@ flowchart LR
 
 ## Backlog
 
-- [ ] Setup CI/CD with Github Actions 
+- [x] Setup CI/CD with Github Actions 
+- [x] Improve workflow scripts
+- [ ] Improve API routing
+- [ ] Back-end unittests
 - [ ] Basic front-end 
 - [ ] Authentication
-- [ ] Improve workflow scripts
-- [ ] Improve API routing
 - [ ] Implement DNS rules
