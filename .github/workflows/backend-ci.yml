@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  docker:
+  backend-ci:
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -1,15 +1,11 @@
 FROM python:3.11-slim
 
-# Install and configure Poetry
-RUN pip install poetry \
-    && poetry config virtualenvs.create false
-
 # Set workdir to isolate files from 
 WORKDIR /app
 
 # Install dependencies
-COPY poetry.lock pyproject.toml ./ 
-RUN poetry install --without dev 
+COPY requirements.txt requirements.txt 
+RUN pip install -r requirements.txt --root-user-action=ignore --no-cache-dir
 
 # Copy sources
 COPY . .

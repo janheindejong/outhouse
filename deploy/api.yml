@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: outhouse-api
-        image: janheindejong/outhouse-api:686a1c3-arm64
+        image: janheindejong/outhouse-api:latest
         env:
         - name: DB_URL
           value: "mariadb+pymysql://root:mariadb@mariadb.mariadb/outhouse"
@@ -36,7 +36,7 @@ spec:
             memory: 150Mi
       initContainers:
       - name: db-init 
-        image: janheindejong/outhouse-api:686a1c3-arm64
+        image: janheindejong/outhouse-api:latest
         command: ["sh", "-c", "alembic upgrade head"]
         env:
         - name: DB_URL

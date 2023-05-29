@@ -8,22 +8,25 @@ The configuration of the API is found in [`outhouse/api/routers`](./outhouse/api
 
 ## Developing 
 
-Development requires Python, Poetry and the `poethepoet` extension for Poetry. 
+Development requires Python and Poetry. With that in place, run: 
 
+```bash
+poetry install
 ```
-poetry install  # Creates venv and makes dependencies
-poetry poe format  # Performs auto-formatting 
-poetry poe test  # Runs tests 
-poetry poe serve  # Serves the app
-```
+
+...and you should be good to go. 
+
+The `scripts` folder contains several useful scripts: 
+
+* `build.sh` - builds the Docker image 
+* `format.sh` - applies auto-formatting 
+* `test.sh` - runs tests 
+* `serve.sh` - serves the app
+
+Note that these scripts should either be run using `poetry run`, or with the created venv activated. 
 
 A debug launcher is also configured for VSCode - simply hit F5. 
 
-## Building and pushing 
+## CI/CD 
 
-I've setup some CI scripts, and linked them to poetry through poe. They require docker, and bash. 
-
-```
-poetry poe build  # Builds an image on your machine, that you can test locally
-poetry poe publish  # Runs tests, creates an ARM64 image, and pushes it to Docker Hub
-```
+I'm using GitHub Actions on this project, configured in `../.github/workflows/`. The CI/CD is limited to testing, building and pushing of a Docker image. Deploying is (for now) still a manual task. 

@@ -23,17 +23,6 @@ autoflake = "^2.0.0"
 [tool.mypy]
 plugins = "sqlmypy"
 
-[tool.poe.tasks]
-format = { shell = "scripts/format.sh"}
-test = { shell = "scripts/test.sh"}
-serve = "uvicorn outhouse.main:app --port 8000 --reload"
-build = { shell = "scripts/build.sh" }
-publish = [
-    { shell = "scripts/check-commit.sh" }, 
-    { ref = "test" }, 
-    { shell = "scripts/build-and-publish.sh" }    
-]
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
