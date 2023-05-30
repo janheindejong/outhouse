@@ -46,9 +46,6 @@ jobs:
       run:
         working-directory: ./backend
     if: github.event_name != 'pull_request'
-    strategy:
-      matrix:
-        platform: ["arm64", "amd64"]
     steps:
 
       # Checkout repository 
@@ -70,5 +67,5 @@ jobs:
         with:
           context: ./backend
           push: true
-          platforms: ${{ matrix.platform }}
+          platforms: arm64,amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/outhouse-api:latest
