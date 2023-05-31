@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "outhouse.main:app",
+                "app.main:app",
                 "--port", "8000", 
                 "--reload"
             ],
