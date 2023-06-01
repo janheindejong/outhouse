@@ -50,7 +50,7 @@ class UserDbAdapter {
     +get(Int id) Map
 }
 
-UserManager --> User 
+UserManager --> User : To layer 1
 UserDbAdapter <-- UserManager
 ```
 
@@ -81,13 +81,45 @@ class SQLUserDbAdapter {
     -conn SQLConnection
 }
 
-SQLUserDbAdapter --|> UserDbAdapter
+SQLUserDbAdapter --|> UserDbAdapter : To layer 2
 SQLConnection <-- SQLUserDbAdapter
 SQLCursor <-- SQLUserDbAdapter
 SQLConnection --> SQLCursor
 ```
 
 The fourth layer contains the implementations of the web framework (i.e. `FastAPI` and `APIRouter`), and the specific implementations of `SQLConnection` and `SQLCursor` (e.g. for SQLite or MySQL).
+
+```mermaid 
+classDiagram 
+
+class SQLConnection {
+    <<interface>>
+    +cursor() SQLCursor
+    +commit()
+}
+
+class SQLCursor {
+    <<interface>>
+    +lastrowid Int | Null
+    +execute(String operation) SQLCursor
+    +fetchone() Map
+}
+
+class SQLiteConnection {
+    +close()
+}
+
+class MySQLConnection {
+    +close()
+}
+
+SQLiteConnection --|> SQLConnection : To Layer 3
+SQLiteCursor --|> SQLCursor : To Layer 3
+MySQLConnection --|> SQLConnection : To Layer 3
+MySQLCursor --|> SQLCursor : To Layer 3
+```
+
+This setup makes it easy to swap out front-end frameworks or database, and test the different parts of the logic. 
 
 ## Developing 
 
