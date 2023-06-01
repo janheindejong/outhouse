@@ -17,7 +17,7 @@ class UserDbAdapter(Protocol):
 
 class UserManager:
     """Responsible for executing business logic (i.e. check if user can
-    create booking, and create it); uses DbHandler for this purpose"""
+    create booking, and create it)"""
 
     def __init__(self, user_db: UserDbAdapter) -> None:
         self._user_db = user_db

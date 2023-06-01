@@ -29,3 +29,8 @@ def test_get_user_by_id(user_manager: UserManager, user_db: UserDbAdapter):
     user = user_manager.get_by_id(123)
     user_db.get_by_id.assert_called_once_with(123)
     assert user == User(**USER)
+
+
+def test_unknown_user(user_manager: UserManager, user_db: UserDbAdapter):
+    user_db.get_by_id.return_value = None
+    assert user_manager.get_by_id(1234) is None

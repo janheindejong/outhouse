@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from .managers import UserManager, UserDbAdapter
 from .config import config, Config
 from .db_adapters import SQLConnection, SQLUserDbAdapter
@@ -41,7 +41,10 @@ def get_user_controller(db: UserDbAdapter = Depends(get_db_handler)) -> UserMana
 
 @router.get("/user/{id}", response_model=User)
 def get_user(id: int, user_controller: UserManager = Depends(get_user_controller)):
-    return user_controller.get_by_id(id)
+    user = user_controller.get_by_id(id)
+    if not user:
+        raise HTTPException(404)
+    return user
 
 
 @router.post("/user")
