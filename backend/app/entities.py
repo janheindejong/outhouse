@@ -7,4 +7,5 @@ __all__ = ["User"]
 @dataclass
 class User:
     name: str
+    email: str
     id: int | None = None

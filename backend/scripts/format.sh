@@ -2,5 +2,5 @@
 
 set -e
 
-ruff check . --fix
 black .
+ruff check . --fix

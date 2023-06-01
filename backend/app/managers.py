@@ -8,10 +8,10 @@ __all__ = ["UserDbAdapter", "UserManager"]
 class UserDbAdapter(Protocol):
     """Responsible for lower level database operations"""
 
-    def create(self, name: str) -> int:
+    def create(self, name: str, email: str) -> int:
         ...
 
-    def get(self, id: int) -> dict | None:
+    def get_by_id(self, id: int) -> dict | None:
         ...
 
 
@@ -22,12 +22,12 @@ class UserManager:
     def __init__(self, user_db: UserDbAdapter) -> None:
         self._user_db = user_db
 
-    def create(self, name: str) -> User:
-        id = self._user_db.create(name)
-        return User(name=name, id=id)
+    def create(self, name: str, email: str) -> User:
+        id = self._user_db.create(name, email)
+        return User(name=name, email=email, id=id)
 
     def get_by_id(self, id: int) -> User | None:
-        user = self._user_db.get(id)
+        user = self._user_db.get_by_id(id)
         if user:
             return User(**user)
         else:

@@ -35,23 +35,27 @@ class SQLUserDbAdapter(UserDbAdapter):
     def __init__(self, conn: SQLConnection):
         self._conn = conn
 
-    def create(self, name: str) -> int:
+    def create(self, name: str, email: str) -> int:
         cur = self._conn.cursor()
         cur.execute(
-            f"""
-            INSERT INTO user VALUES (NULL, '{name}')
             """
+            INSERT INTO user VALUES (NULL, '{}', '{}')
+            """.format(
+                name, email
+            )
         )
         self._conn.commit()
         if not cur.lastrowid:
             raise Exception("Couldn't get last row ID")
         return cur.lastrowid
 
-    def get(self, id: int) -> dict | None:
+    def get_by_id(self, id: int) -> dict | None:
         cur = self._conn.cursor()
         cur.execute(
-            f"""
-            SELECT * FROM user WHERE id={id}
             """
+            SELECT * FROM user WHERE id={}
+            """.format(
+                id
+            )
         )
         return cur.fetchone()

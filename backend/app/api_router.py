@@ -4,11 +4,12 @@ from .config import config, Config
 from .db_adapters import SQLConnection, SQLUserDbAdapter
 from .db_drivers import SQLiteConnection
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserIn(BaseModel):
     name: str
+    email: EmailStr
 
 
 class User(UserIn):
@@ -47,4 +48,4 @@ def get_user(id: int, user_controller: UserManager = Depends(get_user_controller
 def post_user(
     user: UserIn, user_controller: UserManager = Depends(get_user_controller)
 ):
-    return user_controller.create(user.name)
+    return user_controller.create(name=user.name, email=user.email)
