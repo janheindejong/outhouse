@@ -134,6 +134,8 @@ poetry install
 The `scripts` folder contains several useful scripts: 
 
 * `build.sh` - builds the Docker image 
+* `clean.sh` - cleans all non-controlled files (e.g. virtual environment / cache)
+* `reset_test_db.sh` - creates a new test database; requires `sqlite3` CLI to be installed
 * `format.sh` - applies auto-formatting 
 * `test.sh` - runs tests 
 * `serve.sh` - serves the app

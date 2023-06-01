@@ -8,15 +8,10 @@ from app.db_drivers import SQLiteConnection
 def conn_to_tmp_db(tmpdir):
     conn = SQLiteConnection(tmpdir / "db.sqlite")
     cur = conn.cursor()
-    cur.execute(
-        """
-        CREATE TABLE user (
-            id INTEGER PRIMARY KEY, 
-            name TEXT NOT NULL,
-            email TEXT NOT NULL
-        )
-        """
-    )
+    with open("./sql/create_test_db.sql") as f:
+        operations = f.read().split(";")
+    for operation in operations:
+        cur.execute(operation)
     conn.commit()
     return conn
 
@@ -27,11 +22,6 @@ def user_db_adapter(conn_to_tmp_db: SQLiteConnection) -> SQLUserDbAdapter:
 
 
 class TestCRUD:
-    @pytest.fixture(autouse=True)
-    def create_users(self, user_db_adapter: SQLUserDbAdapter):
-        user_db_adapter.create(name="Piet", email="piet@comp.com")
-        user_db_adapter.create(name="Kees", email="kees@comp.com")
-
     def test_create_users_return_value(self, user_db_adapter: SQLUserDbAdapter):
         id = user_db_adapter.create(name="Piet", email="piet@comp.com")
         assert id == 3
