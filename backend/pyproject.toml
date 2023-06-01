@@ -22,6 +22,8 @@ exclude = "tests"
 
 [tool.ruff]
 extend-exclude = ["alembic"]
+select = ["E", "F", "B", "I"]
+extend-ignore = ["B008"]
 
 [build-system]
 requires = ["poetry-core"]

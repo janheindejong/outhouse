@@ -1,36 +1,24 @@
 import pytest
-from app.managers import UserManager, UserDbAdapter
+
+from app.db_adapters import SQLUserDbAdapter
 from app.entities import User
-from unittest.mock import create_autospec
-
-
-USER = {"name": "John Doe", "id": 123, "email": "john.doe@company.com"}
+from app.managers import UserManager
 
 
 @pytest.fixture()
-def user_db() -> UserDbAdapter:
-    return create_autospec(UserDbAdapter)
+def user_manager(sql_user_db_adapter: SQLUserDbAdapter) -> UserManager:
+    return UserManager(sql_user_db_adapter)
 
 
-@pytest.fixture()
-def user_manager(user_db: UserDbAdapter) -> UserManager:
-    return UserManager(user_db)
+def test_create_user(user_manager: UserManager):
+    user = user_manager.create("John Doe", "john.doe@comp.com")
+    assert user == User(name="John Doe", email="john.doe@comp.com", id=3)
 
 
-def test_create_user(user_manager: UserManager, user_db: UserDbAdapter):
-    user_db.create.return_value = 123
-    user = user_manager.create(USER["name"], USER["email"])
-    user_db.create.assert_called_once_with(USER["name"], USER["email"])
-    assert user == User(**USER)
+def test_get_user_by_id(user_manager: UserManager):
+    user = user_manager.get_by_id(1)
+    assert user == User(name="Piet", email="piet@comp.com", id=1)
 
 
-def test_get_user_by_id(user_manager: UserManager, user_db: UserDbAdapter):
-    user_db.get_by_id.return_value = USER
-    user = user_manager.get_by_id(123)
-    user_db.get_by_id.assert_called_once_with(123)
-    assert user == User(**USER)
-
-
-def test_unknown_user(user_manager: UserManager, user_db: UserDbAdapter):
-    user_db.get_by_id.return_value = None
+def test_unknown_user(user_manager: UserManager):
     assert user_manager.get_by_id(1234) is None

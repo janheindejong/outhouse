@@ -1,6 +1,6 @@
-from .managers import UserDbAdapter
 from typing import Protocol
 
+from .managers import UserDbAdapter
 
 __all__ = ["SQLUserDbAdapter", "SQLConnection"]
 

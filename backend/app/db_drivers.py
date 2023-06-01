@@ -1,6 +1,6 @@
-from .db_adapters import SQLConnection, SQLCursor
-
 import sqlite3
+
+from .db_adapters import SQLConnection, SQLCursor
 
 
 class SQLiteCursor(SQLCursor):
@@ -21,7 +21,7 @@ class SQLiteCursor(SQLCursor):
 class SQLiteConnection(SQLConnection):
     def __init__(self, path: str) -> None:
         self._conn = sqlite3.connect(path)
-        self._conn.row_factory = _dict_factory
+        self._conn.row_factory = self._dict_factory
 
     def cursor(self):
         return self._conn.cursor()
@@ -32,7 +32,7 @@ class SQLiteConnection(SQLConnection):
     def close(self):
         return self._conn.close()
 
-
-def _dict_factory(cursor, row):
-    fields = [column[0] for column in cursor.description]
-    return {key: value for key, value in zip(fields, row)}
+    @staticmethod
+    def _dict_factory(cursor, row):
+        fields = [column[0] for column in cursor.description]
+        return {key: value for key, value in zip(fields, row, strict=True)}

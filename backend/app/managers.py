@@ -1,6 +1,6 @@
 from typing import Protocol
-from .entities import User
 
+from .entities import User
 
 __all__ = ["UserDbAdapter", "UserManager"]
 

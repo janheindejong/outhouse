@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from .managers import UserManager, UserDbAdapter
-from .config import config, Config
+from pydantic import BaseModel, EmailStr
+
+from .config import Config, config
 from .db_adapters import SQLConnection, SQLUserDbAdapter
 from .db_drivers import SQLiteConnection
-
-from pydantic import BaseModel, EmailStr
+from .managers import UserDbAdapter, UserManager
 
 
 class UserIn(BaseModel):
