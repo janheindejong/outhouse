@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from .managers import UserManager, UserDbAdapter
-from .db_drivers import SQLiteConnection
 from .config import config, Config
 from .db_adapters import SQLConnection, SQLUserDbAdapter
+from .db_drivers import SQLiteConnection
 
 from pydantic import BaseModel
 
@@ -22,8 +22,12 @@ def get_config() -> Config:
     return config
 
 
-def get_db_connection(config: Config = Depends(get_config)) -> SQLConnection:
-    return SQLiteConnection(config.DB_URL)
+def get_db_connection(config: Config = Depends(get_config)):
+    conn = SQLiteConnection(config.DB_URL)
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 
 def get_db_handler(conn: SQLConnection = Depends(get_db_connection)) -> UserDbAdapter:
@@ -36,11 +40,11 @@ def get_user_controller(db: UserDbAdapter = Depends(get_db_handler)) -> UserMana
 
 @router.get("/user/{id}", response_model=User)
 def get_user(id: int, user_controller: UserManager = Depends(get_user_controller)):
-    return user_controller.get_user_by_id(id)
+    return user_controller.get_by_id(id)
 
 
 @router.post("/user")
 def post_user(
     user: UserIn, user_controller: UserManager = Depends(get_user_controller)
 ):
-    return user_controller.create_user(user.name)
+    return user_controller.create(user.name)

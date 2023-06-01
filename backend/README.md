@@ -8,11 +8,19 @@ The configuration of the API is found in [`outhouse/api/routers`](./outhouse/api
 
 ## Architecture 
 
-For the architecture, I try to implement lessons from [Clean Architecture]() by Uncle Bob. 
+On a high level, the architecture of the app consists of the four levels described by Uncle Bob in [Clean Architecture](). 
 
-The lowest layer consists of the entities, i.e. the `User` class. The second layer contains the use cases - in this case the `UserManager` and corresponding `UserDbAdapter` interface. The third layer contains adapters - in this case the SQL adapter, that implements `UserDbAdapter`. The fourth layer contains the implementations of the web framework (i.e. `FastAPI` and `APIRouter`), and the specific database drivers. 
 
-We use dependency inversion in two places: with the `UserDbAdapter` interface, and the `SQLConnection` interface. Although `PEP249` specifies an interface for the latter, this is not really strictly enforced by the different drivers, so we end up having to create some logic to wrap these drivers in `SQLiteConnection` and `MySQLConnection`.
+```mermaid 
+flowchart TB
+layer1["`**Layer 1** - Entities`"]
+layer2["`**Layer 2** - Use cases`"]
+layer3["`**Layer 3** - Adapters`"]
+layer4["`**Layer 4** - Frameworks and drivers`"]
+layer4 --> layer3 --> layer2 --> layer1
+```
+
+Dependency only flows down (e.g. from layer 4 to 3, or from 2 to 1), never up. The lowest layer consists of the entities, in our case, simply the `User` class. 
 
 ```mermaid 
 classDiagram 
@@ -20,48 +28,66 @@ class User {
     +name String
     +id Int
 }
+```
+
+The second layer contains the use cases. For now, this is the `UserManager`, that handles the logic of creating, reading, updating and deleting a user. It also includes an interface for a `UserDbAdapter`. This is a form of dependency inversion. Since the database driver is a level 4 object, and the database adapter a level 3 object, and we can't depend on a concrete implementation, we specific an interface, that can be implemented in higher levels. 
+
+```mermaid
+classDiagram
+class User
 
 class UserManager {
     -user_db_handler
-    +create_user(String name) User
-    +get_user_by_id(Int id) User
+    +create(String name) Int
+    +get(Int id) User
+    +update(Int id, String name)
+    +delete(Int id)
 }
 
 class UserDbAdapter {
     <<interface>>
-    +create_user(String name) Int
-    +get_user(Int id) Map~Any~
-    +close()
+    +create(String name) Int
+    +get(Int id) Map
+}
+
+UserManager --> User 
+UserDbAdapter <-- UserManager
+```
+
+The third layer contains adapters - in this case the SQL adapter, that implements `UserDbAdapter`. This class is responsible for implementing the SQL specific code that changes the database format, into the format that our level 2 classes understand. Now here's a bit of a tricky part: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I noticed it is not really stringent enough for this purpose. Therefore, we have to create our own, more strict implementation of this protocol for our use case. using the `SQLConnection` and `SQLCursor` interfaces.  
+
+```mermaid 
+classDiagram 
+class SQLConnection {
+    <<interface>>
+    +cursor() SQLCursor
+    +commit()
+}
+
+class SQLCursor {
+    <<interface>>
+    +lastrowid Int | Null
+    +execute(String operation) SQLCursor
+    +fetchone() Map
+}
+
+class UserDbAdapter {
+    <<interface>>
+    +create(String name) Int
+    +get(Int id) Map
 }
 
 class SQLUserDbAdapter {
     -conn SQLConnection
 }
 
-class APIRouter {
-    +get_user()
-    +post_user()
-}
-
-class SQLConnection {
-    <<interface>>
-    +lastrowid
-    +start()
-    +execute(String sql)
-    +commit()
-    +fetchone() Dict
-    +close()
-}
-
-UserManager --> User 
 SQLUserDbAdapter --|> UserDbAdapter
-UserManager --o UserDbAdapter
-APIRouter --> UserManager
 SQLConnection <-- SQLUserDbAdapter
-SQLiteConnection <|-- SQLConnection
-MySQLConnection <|-- SQLConnection
-FastAPI --> APIRouter
+SQLCursor <-- SQLUserDbAdapter
+SQLConnection --> SQLCursor
 ```
+
+The fourth layer contains the implementations of the web framework (i.e. `FastAPI` and `APIRouter`), and the specific implementations of `SQLConnection` and `SQLCursor` (e.g. for SQLite or MySQL).
 
 ## Developing 
 
