@@ -24,8 +24,8 @@ class SQLiteConnection(SQLConnection):
         self._conn = sqlite3.connect(path)
         self._conn.row_factory = self._dict_factory
 
-    def cursor(self):
-        return self._conn.cursor()
+    def cursor(self) -> SQLCursor:
+        return SQLiteCursor(self._conn.cursor())
 
     def commit(self):
         self._conn.commit()
