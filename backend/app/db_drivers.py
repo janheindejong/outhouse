@@ -20,7 +20,7 @@ class SQLiteCursor(SQLCursor):
 
 class SQLiteConnection(SQLConnection):
     def __init__(self, path: str) -> None:
-        self._conn = sqlite3.connect(path)
+        self._conn = sqlite3.connect(path, check_same_thread=False)
         self._conn.row_factory = self._dict_factory
 
     def cursor(self):

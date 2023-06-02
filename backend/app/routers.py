@@ -31,11 +31,11 @@ def get_db_connection(config: Config = Depends(get_config)):
         conn.close()
 
 
-def get_db_handler(conn: SQLConnection = Depends(get_db_connection)) -> UserDbAdapter:
+def get_db_adapter(conn: SQLConnection = Depends(get_db_connection)) -> UserDbAdapter:
     return SQLUserDbAdapter(conn)
 
 
-def get_user_controller(db: UserDbAdapter = Depends(get_db_handler)) -> UserManager:
+def get_user_controller(db: UserDbAdapter = Depends(get_db_adapter)) -> UserManager:
     return UserManager(db)
 
 
