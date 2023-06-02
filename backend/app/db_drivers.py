@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 from .db_adapters import SQLConnection, SQLCursor
@@ -19,8 +20,8 @@ class SQLiteCursor(SQLCursor):
 
 
 class SQLiteConnection(SQLConnection):
-    def __init__(self, path: str) -> None:
-        self._conn = sqlite3.connect(path, check_same_thread=False)
+    def __init__(self, path: str | bytes | os.PathLike) -> None:
+        self._conn = sqlite3.connect(path)
         self._conn.row_factory = self._dict_factory
 
     def cursor(self):

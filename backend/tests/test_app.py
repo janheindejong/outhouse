@@ -1,3 +1,5 @@
+import pathlib
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -7,14 +9,15 @@ from app.routers import get_db_connection
 
 
 @pytest.fixture
-def client(test_db_conn: SQLiteConnection):
+def client(test_db_path: pathlib.Path):
     client = TestClient(app)
 
     def get_test_db_conn():
+        conn = SQLiteConnection(test_db_path)
         try:
-            yield test_db_conn
+            yield conn
         finally:
-            test_db_conn.close()
+            conn.close()
 
     app.dependency_overrides[get_db_connection] = get_test_db_conn
     return client
