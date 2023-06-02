@@ -20,5 +20,10 @@ def test_get_user_by_id(user_manager: UserManager):
     assert user == User(name="Piet", email="piet@comp.com", id=1)
 
 
+def test_get_user_by_email(user_manager: UserManager):
+    user = user_manager.get_by_email("piet@comp.com")
+    assert user == User(name="Piet", email="piet@comp.com", id=1)
+
+
 def test_unknown_user(user_manager: UserManager):
     assert user_manager.get_by_id(1234) is None

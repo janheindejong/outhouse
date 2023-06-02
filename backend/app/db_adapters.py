@@ -59,3 +59,14 @@ class SQLUserDbAdapter(UserDbAdapter):
             )
         )
         return cur.fetchone()
+
+    def get_by_email(self, email: str) -> dict | None:
+        cur = self._conn.cursor()
+        cur.execute(
+            """
+            SELECT * FROM user WHERE email='{}'
+            """.format(
+                email
+            )
+        )
+        return cur.fetchone()

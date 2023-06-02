@@ -14,10 +14,13 @@ class UserDbAdapter(Protocol):
     def get_by_id(self, id: int) -> dict | None:
         ...
 
+    def get_by_email(self, email: str) -> dict | None:
+        ...
+
 
 class UserManager:
-    """Responsible for executing business logic (i.e. check if user can
-    create booking, and create it)"""
+    """Responsible for executing business logic related to managing
+    users (i.e. creating users, querying users, deleting users)"""
 
     def __init__(self, user_db: UserDbAdapter) -> None:
         self._user_db = user_db
@@ -28,6 +31,13 @@ class UserManager:
 
     def get_by_id(self, id: int) -> User | None:
         user = self._user_db.get_by_id(id)
+        if user:
+            return User(**user)
+        else:
+            return None
+
+    def get_by_email(self, email: str) -> User | None:
+        user = self._user_db.get_by_email(email)
         if user:
             return User(**user)
         else:

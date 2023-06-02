@@ -29,6 +29,12 @@ def test_get_user_by_id(client: TestClient):
     assert resp.json() == {"name": "Piet", "email": "piet@comp.com", "id": 1}
 
 
+def test_get_user_by_email(client: TestClient):
+    resp = client.get("/v1/user", params={"email": "piet@comp.com"})
+    assert resp.status_code == 200
+    assert resp.json() == {"name": "Piet", "email": "piet@comp.com", "id": 1}
+
+
 def test_post_user(client: TestClient):
     post_resp = client.post(
         "/v1/user", json={"name": "John Doe", "email": "john.doe@comp.com"}

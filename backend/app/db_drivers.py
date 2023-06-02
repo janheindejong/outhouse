@@ -5,6 +5,8 @@ from .db_adapters import SQLConnection, SQLCursor
 
 
 class SQLiteCursor(SQLCursor):
+    """Very thin wrapper around sqlite3.Cursor class"""
+
     def __init__(self, cursor: sqlite3.Cursor) -> None:
         self._cur = cursor
 
@@ -20,6 +22,8 @@ class SQLiteCursor(SQLCursor):
 
 
 class SQLiteConnection(SQLConnection):
+    """Very thin wrapper around sqlite3.Connection"""
+
     def __init__(self, path: str | bytes | os.PathLike) -> None:
         self._conn = sqlite3.connect(path)
         self._conn.row_factory = self._dict_factory
