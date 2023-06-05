@@ -1,10 +1,10 @@
-# Outhouse API
+# My Cottage API
 
 Very basic back-end API, for now it just handles users and calender end-points. 
 
 ## Structure 
 
-The configuration of the API is found in [`outhouse/api/routers`](./outhouse/api/routers/). Each top-level end-point has its own `*.py` file, containing the definition of the end-point. Schemas can be found in [`outhouse/api/schemas.py`](./outhouse/api/schemas.py). 
+The configuration of the API is found in [`app/api/routers`](./app/api/routers/). Each top-level end-point has its own `*.py` file, containing the definition of the end-point. Schemas can be found in [`app/api/schemas.py`](./app/api/schemas.py). 
 
 ## Architecture 
 
@@ -142,4 +142,4 @@ A debug launcher is also configured for VSCode - simply hit F5.
 
 ## CI/CD 
 
-I'm using GitHub Actions on this project, configured in `../.github/workflows/`. The CI/CD is limited to testing, building and pushing of a Docker image. Deploying is (for now) still a manual task. The image is pushed to `janheindejong/outhouse-api:latest` for both `arm64` and `amd64`. 
+I'm using GitHub Actions on this project, configured in `../.github/workflows/`. The CI/CD is limited to testing, building and pushing of a Docker image. Deploying is (for now) still a manual task. The image is pushed to `janheindejong/my-cottage-api:latest` for both `arm64` and `amd64`. 

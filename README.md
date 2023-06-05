@@ -1,6 +1,6 @@
-# Outhouse application 
+# Our Cottage 
 
-Outhouse is a web-based appt that allows you and your family members to manage everything related to your family outhouse. Think of things like having a shared calender, budgetting, shopping and to-do list, guestbook, you name it...
+Our Cottage is a web-based appt that allows you and your family members to manage everything related to your family cottage. Think of things like having a shared calender, budgetting, shopping and to-do list, guestbook, you name it...
 
 ## Architecture
 

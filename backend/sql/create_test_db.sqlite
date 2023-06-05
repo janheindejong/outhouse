@@ -9,12 +9,12 @@ VALUES
     ('Piet', 'piet@comp.com'),
     ('Kees', 'kees@comp.com');
 
-CREATE TABLE outhouse (
+CREATE TABLE cottage (
     id INTEGER PRIMARY KEY, 
     name TEXT NOT NULL
 );
 
-INSERT INTO outhouse (name)
+INSERT INTO cottage (name)
 VALUES 
     ('Duinzicht'), 
     ('Veldwacht');
@@ -22,13 +22,13 @@ VALUES
 CREATE TABLE participations (
     id INTEGER PRIMARY KEY, 
     user_id INT NOT NULL,
-    outhouse_id INT NOT NULL, 
+    cottage_id INT NOT NULL, 
     role TEXT CHECK( role IN ('admin','participant') ) NOT NULL,
     FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(outhouse_id) REFERENCES outhouse(id)
+    FOREIGN KEY(cottage_id) REFERENCES cottage(id)
 );
 
-INSERT INTO participations (user_id, outhouse_id, role)
+INSERT INTO participations (user_id, cottage_id, role)
 VALUES 
     (1, 1, 'admin'),
     (1, 2, 'participant'),

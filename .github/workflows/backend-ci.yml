@@ -68,4 +68,4 @@ jobs:
           context: ./backend
           push: true
           platforms: arm64,amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/outhouse-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/our-cottage-api:latest

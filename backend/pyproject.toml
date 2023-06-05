@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "outhouse"
+name = "our-cottage"
 version = "0.1.0"
 description = ""
 authors = ["Jan Hein de Jong <janhein.dejong@gmail.com>"]
