@@ -1,8 +1,9 @@
 from typing import Protocol
 
-from .managers import DbAdapter
+from .entities import User
+from .managers import UserDbAdapter
 
-__all__ = ["SQLDbAdapter", "SQLConnection"]
+__all__ = ["SQLUserDbAdapter", "SQLConnection"]
 
 
 class SQLCursor(Protocol):
@@ -29,13 +30,13 @@ class SQLConnection(Protocol):
         ...
 
 
-class SQLDbAdapter(DbAdapter):
+class SQLUserDbAdapter(UserDbAdapter):
     """Contains SQL logic to interact with user DB"""
 
     def __init__(self, conn: SQLConnection):
         self._conn = conn
 
-    def create_user(self, name: str, email: str) -> int:
+    def create_user(self, name: str, email: str) -> User:
         cur = self._conn.cursor()
         cur.execute(
             """
@@ -47,9 +48,9 @@ class SQLDbAdapter(DbAdapter):
         self._conn.commit()
         if not cur.lastrowid:
             raise Exception("Couldn't get last row ID")
-        return cur.lastrowid
+        return User(id=cur.lastrowid, name=name, email=email)
 
-    def get_user_by_id(self, id: int) -> dict | None:
+    def get_user_by_id(self, id: int) -> User | None:
         cur = self._conn.cursor()
         cur.execute(
             """
@@ -58,9 +59,12 @@ class SQLDbAdapter(DbAdapter):
                 id
             )
         )
-        return cur.fetchone()
+        if user := cur.fetchone():
+            return User(**user)
+        else:
+            return None
 
-    def get_user_by_email(self, email: str) -> dict | None:
+    def get_user_by_email(self, email: str) -> User | None:
         cur = self._conn.cursor()
         cur.execute(
             """
@@ -69,4 +73,7 @@ class SQLDbAdapter(DbAdapter):
                 email
             )
         )
-        return cur.fetchone()
+        if user := cur.fetchone():
+            return User(**user)
+        else:
+            return None

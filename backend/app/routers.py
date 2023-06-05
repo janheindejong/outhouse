@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, EmailStr
 
 from .config import config
-from .db_adapters import SQLConnection, SQLDbAdapter
+from .db_adapters import SQLConnection, SQLUserDbAdapter
 from .db_drivers import SQLiteConnection
-from .managers import DbAdapter, UserManager
+from .managers import UserDbAdapter, UserManager
 
 
 class UserIn(BaseModel):
@@ -27,11 +27,11 @@ def get_db_connection():
         conn.close()
 
 
-def get_db_adapter(conn: SQLConnection = Depends(get_db_connection)) -> DbAdapter:
-    return SQLDbAdapter(conn)
+def get_db_adapter(conn: SQLConnection = Depends(get_db_connection)) -> UserDbAdapter:
+    return SQLUserDbAdapter(conn)
 
 
-def get_user_controller(db: DbAdapter = Depends(get_db_adapter)) -> UserManager:
+def get_user_controller(db: UserDbAdapter = Depends(get_db_adapter)) -> UserManager:
     return UserManager(db)
 
 

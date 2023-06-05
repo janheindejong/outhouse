@@ -30,7 +30,7 @@ class User {
 }
 ```
 
-The second layer contains the use cases. For now, this is the `UserManager`, that handles the logic of creating, reading, updating and deleting a user. It also includes an interface for a `UserDbAdapter`. This is a form of dependency inversion. Since the database driver is a level 4 object, and the database adapter a level 3 object, and we can't depend on a concrete implementation, we specific an interface, that can be implemented in higher levels. 
+The second layer contains the use cases. For now, this is the `UserManager`, that handles the logic of creating, reading, updating and deleting a user. It also includes an interface for a `UserUserDbAdapter`. This is a form of dependency inversion. Since the database driver is a level 4 object, and the database adapter a level 3 object, and we can't depend on a concrete implementation, we specific an interface, that can be implemented in higher levels. 
 
 ```mermaid
 classDiagram
@@ -38,26 +38,29 @@ class User
 
 class UserManager {
     -user_db_handler
-    +create(String name) Int
+    +create(String name) User
     +get(Int id) User
     +update(Int id, String name)
     +delete(Int id)
 }
 
-class DbAdapter {
+class UserDbAdapter {
     <<interface>>
-    +create_user(String name, String email) Int
-    +get_user_by_id(Int id) Map
-    +get_user_by_email(String email) Map
-    +update_user(String name, String email) Map
+    +create_user(String name, String email) User
+    +get_user_by_id(Int id) User
+    +get_user_by_email(String email) User
+    +update_user(String name, String email) User
     +delete_user(Int id)
 }
 
 UserManager --> User : To layer 1
-DbAdapter <-- UserManager
+UserDbAdapter <-- UserManager
+UserDbAdapter --> User : To layer 1
 ```
 
-The third layer contains adapters - in this case the SQL adapter, that implements `DbAdapter`. This class is responsible for implementing the SQL specific code that changes the database format, into the format that our level 2 classes understand. Now here's a bit of a tricky part: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I haven't been able to find an out-of-the-box type definition for this protocol, so I created my own, more strict type, using the `SQLConnection` and `SQLCursor` interfaces.  
+The third layer contains adapters - in this case the SQL adapter, that implements `UserDbAdapter`. This class is responsible for implementing the SQL specific code that changes the database format, into the format that our level 2 classes understand. Notice how this is basically a description of an ORM. 
+
+There is a bit of a tricky part here: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I haven't been able to find an out-of-the-box type definition for this protocol, so I created my own, more strict type, using the `SQLConnection` and `SQLCursor` interfaces.  
 
 ```mermaid 
 classDiagram 
@@ -74,17 +77,17 @@ class SQLCursor {
     +fetchone() Map
 }
 
-class DbAdapter {
+class UserDbAdapter {
     <<interface>>
 }
 
-class SQLDbAdapter {
+class SQLUserDbAdapter {
     -conn SQLConnection
 }
 
-SQLDbAdapter --|> DbAdapter : To layer 2
-SQLConnection <-- SQLDbAdapter
-SQLCursor <-- SQLDbAdapter
+SQLUserDbAdapter --|> UserDbAdapter : To layer 2
+SQLConnection <-- SQLUserDbAdapter
+SQLCursor <-- SQLUserDbAdapter
 SQLConnection --> SQLCursor
 ```
 
