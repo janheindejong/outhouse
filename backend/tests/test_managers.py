@@ -1,12 +1,12 @@
 import pytest
 
-from app.db_adapters import SQLUserDbAdapter
+from app.db_adapters import SQLDbAdapter
 from app.entities import User
 from app.managers import UserManager
 
 
 @pytest.fixture()
-def user_manager(sql_user_db_adapter: SQLUserDbAdapter) -> UserManager:
+def user_manager(sql_user_db_adapter: SQLDbAdapter) -> UserManager:
     return UserManager(sql_user_db_adapter)
 
 

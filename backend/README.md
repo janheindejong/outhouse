@@ -44,17 +44,20 @@ class UserManager {
     +delete(Int id)
 }
 
-class UserDbAdapter {
+class DbAdapter {
     <<interface>>
-    +create(String name) Int
-    +get(Int id) Map
+    +create_user(String name, String email) Int
+    +get_user_by_id(Int id) Map
+    +get_user_by_email(String email) Map
+    +update_user(String name, String email) Map
+    +delete_user(Int id)
 }
 
 UserManager --> User : To layer 1
-UserDbAdapter <-- UserManager
+DbAdapter <-- UserManager
 ```
 
-The third layer contains adapters - in this case the SQL adapter, that implements `UserDbAdapter`. This class is responsible for implementing the SQL specific code that changes the database format, into the format that our level 2 classes understand. Now here's a bit of a tricky part: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I noticed it is not really stringent enough for this purpose. Therefore, we have to create our own, more strict implementation of this protocol for our use case. using the `SQLConnection` and `SQLCursor` interfaces.  
+The third layer contains adapters - in this case the SQL adapter, that implements `DbAdapter`. This class is responsible for implementing the SQL specific code that changes the database format, into the format that our level 2 classes understand. Now here's a bit of a tricky part: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I haven't been able to find an out-of-the-box type definition for this protocol, so I created my own, more strict type, using the `SQLConnection` and `SQLCursor` interfaces.  
 
 ```mermaid 
 classDiagram 
@@ -71,19 +74,17 @@ class SQLCursor {
     +fetchone() Map
 }
 
-class UserDbAdapter {
+class DbAdapter {
     <<interface>>
-    +create(String name) Int
-    +get(Int id) Map
 }
 
-class SQLUserDbAdapter {
+class SQLDbAdapter {
     -conn SQLConnection
 }
 
-SQLUserDbAdapter --|> UserDbAdapter : To layer 2
-SQLConnection <-- SQLUserDbAdapter
-SQLCursor <-- SQLUserDbAdapter
+SQLDbAdapter --|> DbAdapter : To layer 2
+SQLConnection <-- SQLDbAdapter
+SQLCursor <-- SQLDbAdapter
 SQLConnection --> SQLCursor
 ```
 
@@ -94,15 +95,10 @@ classDiagram
 
 class SQLConnection {
     <<interface>>
-    +cursor() SQLCursor
-    +commit()
 }
 
 class SQLCursor {
     <<interface>>
-    +lastrowid Int | Null
-    +execute(String operation) SQLCursor
-    +fetchone() Map
 }
 
 class SQLiteConnection {
