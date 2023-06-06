@@ -11,7 +11,7 @@ def test_db_path(tmpdir: pathlib.Path):
     path = tmpdir / "db.sqlite"
     conn = SQLiteConnection(path)
     cur = conn.cursor()
-    with open("./sql/create_test_db.sqlite") as f:
+    with open("./sql/create_test_db.sql") as f:
         operations = f.read().split(";")
     for operation in operations:
         cur.execute(operation)

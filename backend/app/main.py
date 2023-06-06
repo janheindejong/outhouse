@@ -8,7 +8,7 @@ from .factories import UserInteractorFactory
 from .interactors import UserInteractor
 
 # Load environment
-DB_URL = os.getenv("DB_URL", "./data/db.sqlite")
+DB_URL = os.getenv("DB_URL", "./data/db.sql")
 
 # Instantiate UserInterfaceFactory
 user_interface_factory = UserInteractorFactory(DB_URL)
