@@ -1,4 +1,4 @@
-from app.db_adapters import SQLUserDbAdapter
+from app.adapters import SQLUserDbAdapter
 from app.entities import User
 
 

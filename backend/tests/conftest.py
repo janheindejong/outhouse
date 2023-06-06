@@ -2,8 +2,8 @@ import pathlib
 
 import pytest
 
-from app.db_adapters import SQLUserDbAdapter
-from app.db_drivers import SQLiteConnection
+from app.adapters import SQLUserDbAdapter
+from app.drivers import SQLiteConnection
 
 
 @pytest.fixture

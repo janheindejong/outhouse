@@ -2,7 +2,7 @@ from typing import Protocol
 
 from .entities import User
 
-__all__ = ["UserDbAdapter", "UserManager"]
+__all__ = ["UserDbAdapter", "UserInteractor"]
 
 
 class UserDbAdapter(Protocol):
@@ -18,7 +18,7 @@ class UserDbAdapter(Protocol):
         ...
 
 
-class UserManager:
+class UserInteractor:
     """Responsible for executing business logic related to managing
     users (i.e. creating users, querying users, deleting users)"""
 

@@ -13,5 +13,4 @@ class User:
 @dataclass
 class Cottage:
     name: str
-    users: list[User]
     id: int | None = None

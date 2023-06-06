@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from .db_adapters import SQLConnection, SQLCursor
+from .adapters import SQLConnection, SQLCursor
 
 
 class SQLiteCursor(SQLCursor):

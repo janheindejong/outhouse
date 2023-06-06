@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from .entities import User
-from .managers import UserDbAdapter
+from .interactors import UserDbAdapter
 
 __all__ = ["SQLUserDbAdapter", "SQLConnection"]
 

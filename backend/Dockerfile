@@ -20,4 +20,4 @@ COPY . .
 # Configure how application should be run
 ENV DB_URL "sqlite:///data/db.sqlite"
 EXPOSE 8000
-CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
