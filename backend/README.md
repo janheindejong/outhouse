@@ -2,6 +2,21 @@
 
 Very basic back-end API, for now it just handles users and calender end-points. 
 
+## API 
+
+The application exposes the following endpoints: 
+
+* `POST /user`
+* `GET /user/{id}`
+* `GET /user/{id}/booking`
+* `GET /user/{id}/membership`
+* `POST /cottage`
+* `GET /cottage/{id}`
+* `POST /cottage/{id}/booking`
+* `POST /cottage/{id}/membership`
+* `DELETE /cottage/{id}/booking/{id}`
+* `DELETE /cottage/{id}/membership/{id}`
+
 ## Architecture 
 
 On a high level, the architecture of the app consists of the four levels described by Uncle Bob in [Clean Architecture](). 
@@ -25,7 +40,7 @@ The second layer contains the use cases. For now, this is the `UserInteractor`, 
 
 The third layer contains adapters - in this case the SQL adapter, that implements `UserDbAdapter`. This class is responsible for implementing the SQL specific code that changes the database format, into the format that our level 2 classes understand. Notice how this is basically a description of an ORM. 
 
-There is a bit of a tricky part here: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I haven't been able to find an out-of-the-box type definition for this protocol, so I created my own, more strict type, using the `SQLConnection` interface.  
+There is a bit of a tricky part here: to be able to execute this, it has to know of a database driver. Python specifies PEP249, which in theory would be enough to define the interface with the specific driver. However, I haven't been able to find an out-of-the-box type definition for this protocol, so I created my own, more `SQLConnection` interface.  
 
 The fourth layer contains the implementations of the web framework (i.e. `FastAPI` and `APIRouter`), the specific implementations of `SQLConnection` (e.g. for SQLite or MySQL), and a factory class, used by the FastAPI dependency injection framework for generating instances of `UserInteractor` for handling every request. 
 

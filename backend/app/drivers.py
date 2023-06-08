@@ -16,6 +16,9 @@ class SQLiteCursor(SQLCursor):
     def fetchone(self) -> dict | None:
         return self._cur.fetchone()
 
+    def fetchall(self) -> list[dict]:
+        return self._cur.fetchall()
+
     @property
     def lastrowid(self) -> int | None:
         return self._cur.lastrowid

@@ -2,7 +2,7 @@ import pathlib
 
 import pytest
 
-from app.adapters import SQLUserDbAdapter
+from app.adapters import SQLMembershipDbAdapter, SQLUserDbAdapter
 from app.drivers import SQLiteConnection
 
 
@@ -23,3 +23,8 @@ def test_db_path(tmpdir: pathlib.Path):
 @pytest.fixture
 def sql_user_db_adapter(test_db_path: pathlib.Path) -> SQLUserDbAdapter:
     return SQLUserDbAdapter(SQLiteConnection(test_db_path))
+
+
+@pytest.fixture
+def sql_membership_db_adapter(test_db_path: pathlib.Path) -> SQLMembershipDbAdapter:
+    return SQLMembershipDbAdapter(SQLiteConnection(test_db_path))

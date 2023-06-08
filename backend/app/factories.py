@@ -1,6 +1,6 @@
 import os
 
-from .adapters import SQLUserDbAdapter
+from .adapters import SQLMembershipDbAdapter, SQLUserDbAdapter
 from .drivers import SQLiteConnection
 from .interactors import UserInteractor
 
@@ -12,7 +12,8 @@ class UserInteractorFactory:
     def __call__(self):
         conn = SQLiteConnection(self._db_url)
         try:
-            adapter = SQLUserDbAdapter(conn)
-            yield UserInteractor(adapter)
+            user_db = SQLUserDbAdapter(conn)
+            membership_db = SQLMembershipDbAdapter(conn)
+            yield UserInteractor(user_db, membership_db)
         finally:
             conn.close()

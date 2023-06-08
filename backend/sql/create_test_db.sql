@@ -19,17 +19,18 @@ VALUES
     ('Duinzicht'), 
     ('Veldwacht');
 
-CREATE TABLE participations (
+CREATE TABLE memberships (
     id INTEGER PRIMARY KEY, 
     user_id INT NOT NULL,
     cottage_id INT NOT NULL, 
-    role TEXT CHECK( role IN ('admin','participant') ) NOT NULL,
+    role TEXT CHECK( role IN ('admin','member') ) NOT NULL,
     FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(cottage_id) REFERENCES cottage(id)
+    FOREIGN KEY(cottage_id) REFERENCES cottage(id),
+    UNIQUE(user_id, cottage_id)
 );
 
-INSERT INTO participations (user_id, cottage_id, role)
+INSERT INTO memberships (user_id, cottage_id, role)
 VALUES 
     (1, 1, 'admin'),
-    (1, 2, 'participant'),
+    (1, 2, 'member'),
     (2, 2, 'admin');
