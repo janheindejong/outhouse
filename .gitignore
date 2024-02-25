@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Misc
 **/client/src/app/generated/
+
+# Vite 
+*.vite
