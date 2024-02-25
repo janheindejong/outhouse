@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutHouse.Server", "OutHouse.Server\OutHouse.Server.csproj", "{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "outhouse.client", "outhouse.client\outhouse.client.esproj", "{BDE9C792-4A29-4D28-A9B1-62AF009313EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A02D163-C67A-4175-9268-4F8D328BDB96}
+	EndGlobalSection
+EndGlobal
