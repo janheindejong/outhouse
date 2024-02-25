@@ -13,35 +13,8 @@ on:
       - 'backend/**'
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
-    steps:
-
-      # Checkout repository 
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # Setup Python environment
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11' 
-      - name: Install Poetry
-        run: curl -sSL https://install.python-poetry.org | python3 -
-
-      # Install dependencies
-      - name: Install dependencies 
-        run: poetry install --sync
-
-      # Run tests
-      - name: Run tests 
-        run: poetry run scripts/test.sh 
-
   build:
     runs-on: ubuntu-latest
-    needs: test
     defaults:
       run:
         working-directory: ./backend
@@ -65,7 +38,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./backend
+          file: ./OutHouse.Server/Dockerfile
+          context: .
           push: true
           platforms: arm64,amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/our-cottage-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/our-cottage:latest

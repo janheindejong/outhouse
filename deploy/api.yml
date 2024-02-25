@@ -6,26 +6,26 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: outhouse-api
+  name: outhouse
   namespace: outhouse
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: outhouse-api
+      app: outhouse
   template:
     metadata:
       labels:
-        app: outhouse-api
+        app: outhouse
     spec:
       containers:
-      - name: outhouse-api
-        image: janheindejong/outhouse-api:latest
+      - name: outhouse
+        image: janheindejong/outhouse:latest
         env:
         - name: DB_URL
           value: "mariadb+pymysql://root:mariadb@mariadb.mariadb/outhouse"
         ports:
-        - containerPort: 8000
+        - containerPort: 8080
           name: http-port
         resources:
           limits:
@@ -36,7 +36,7 @@ spec:
             memory: 150Mi
       initContainers:
       - name: db-init 
-        image: janheindejong/outhouse-api:latest
+        image: janheindejong/outhouse:latest
         command: ["sh", "-c", "alembic upgrade head"]
         env:
         - name: DB_URL
@@ -45,13 +45,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: outhouse-api
+  name: outhouse
   namespace: outhouse
 spec:
   type: ClusterIP
   selector:
-    app: outhouse-api
+    app: outhouse
   ports:
     - protocol: TCP
-      port: 8000
+      port: 8080
       targetPort: http-port
