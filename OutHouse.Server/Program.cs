@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using OutHouse.Server.Users;
+
 namespace OutHouse.Server
 {
     public class Program
@@ -10,6 +13,9 @@ namespace OutHouse.Server
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<UserContext>(options =>
+                options.UseInMemoryDatabase("OutHouse"));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
