@@ -41,5 +41,4 @@ jobs:
           file: ./OutHouse.Server/Dockerfile
           context: .
           push: true
-          platforms: arm64,amd64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/our-cottage:latest

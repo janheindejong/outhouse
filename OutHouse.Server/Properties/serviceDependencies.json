@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "DbConnectionString:Development",
+      "dynamicId": null
+    }
+  }
+}
