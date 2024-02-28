@@ -7,7 +7,11 @@
       "containerName": "mssql",
       "containerImage": "mcr.microsoft.com/mssql/server:2019-latest",
       "type": "mssql.container",
-      "connectionId": "DbConnectionString:Development",
+      "connectionId": "ConnectionString:OuthouseDb",
+      "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets.user",
       "dynamicId": null
     }
   }

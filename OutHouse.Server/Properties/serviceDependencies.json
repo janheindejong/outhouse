@@ -2,7 +2,11 @@
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "DbConnectionString:Development",
+      "connectionId": "ConnectionString:OuthouseDb",
+      "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets",
       "dynamicId": null
     }
   }
