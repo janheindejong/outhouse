@@ -19,6 +19,9 @@ namespace OutHouse.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+            // Azure Logging; this is necessary for logs to show up in the Azure App Service
+            builder.Logging.AddAzureWebAppDiagnostics();
 
             var app = builder.Build();
 
