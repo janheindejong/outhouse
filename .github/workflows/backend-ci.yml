@@ -15,30 +15,34 @@ jobs:
   test: 
     runs-on: ubuntu-latest 
     steps: 
+
+      # Prepare
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup .NET 
-        uses: actions/setup-dotnet@v3
-        with: 
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
+      
+      # Run SQL server
       - name: Start SQL Server in Docker container
         uses: potatoqualitee/mssqlsuite@v1.7
         with:
           install: sqlengine
           sa-password: 'yourStrong(!)Password'
 
+      # Install dependencies
+      - name: Setup .NET 
+        uses: actions/setup-dotnet@v3
+        with: 
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Install dependencies
         run: dotnet restore
 
+      # Build and test 
       - name: Build
         run: dotnet build
-
       - name: Test with the dotnet CLI
         run: dotnet test
 
-  build:
+  deploy:
+    needs: [test]
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
     steps:
@@ -47,23 +51,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
- # Setup .NET Core SDK
+      # Setup .NET Core SDK
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       
       # Run dotnet build and publish
       - name: Build and publish
         run: |
-          dotnet restore
-          dotnet build -c Release
-          dotnet publish -c Release --property:PublishDir='./myapp' 
+          dotnet restore "./OutHouse.Server/OutHouse.Server.csproj"
+          cd ./OutHouse.Server
+          dotnet build "./OutHouse.Server.csproj" -c Release -o ../build
+          dotnet publish "./OutHouse.Server.csproj" -c Release -o ../publish
           
       # Deploy to Azure Web apps
       - name: Deploy
         uses: azure/webapps-deploy@v3
         with: 
-          app-name: outhouse # Replace with your app name
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-          package: './myapp'      
+          app-name: outhouse 
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
+          package: ./publish
