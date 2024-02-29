@@ -1,15 +1,5 @@
 {
   "dependencies": {
-    "mssql1": {
-      "serviceConnectorResourceId": "",
-      "containerPorts": "1433:1433",
-      "secretStore": "LocalSecretsFile",
-      "containerName": "mssql",
-      "containerImage": "mcr.microsoft.com/mssql/server:2019-latest",
-      "type": "mssql.container",
-      "connectionId": "ConnectionString:OuthouseDb",
-      "dynamicId": null
-    },
     "secrets1": {
       "type": "secrets.user",
       "dynamicId": null

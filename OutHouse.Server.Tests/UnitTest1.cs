@@ -18,8 +18,7 @@ namespace OutHouse.Server.Tests
         public void Setup()
         {
              _options = new DbContextOptionsBuilder<UserContext>()
-                .UseInMemoryDatabase("BloggingControllerTest")
-                .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                .UseSqlServer("Server=localhost,1433;Database=testdb;User ID=sa;Password=yourStrong(!)Password;Persist Security Info=False;TrustServerCertificate=true;")
                 .Options;
 
             _context = new UserContext(_options);
@@ -29,8 +28,8 @@ namespace OutHouse.Server.Tests
             _context.Database.EnsureCreated();
 
             _context.AddRange(
-                   new User { UserId = 1, Name = "Pete" },
-                   new User { UserId = 2, Name = "Carl" }
+                   new User { Name = "Pete" },
+                   new User { Name = "Carl" }
                 );
             _context.SaveChanges();
         }
