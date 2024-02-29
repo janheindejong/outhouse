@@ -18,24 +18,24 @@ Local development and running the test project require a MS SQL Server to be rea
 
 ```PowerShell
 docker run `
-	--name mssql `
-	-e "ACCEPT_EULA=Y" `
-	-e "MSSQL_SA_PASSWORD=yourStrong(!)Password" `
-	-p 1433:1433 `
-	-d `
-	mcr.microsoft.com/mssql/server:2022-latest
+    --name mssql `
+    -e "ACCEPT_EULA=Y" `
+    -e "MSSQL_SA_PASSWORD=yourStrong(!)Password" `
+    -p 1433:1433 `
+    -d `
+    mcr.microsoft.com/mssql/server:2022-latest
 ```
 
 ...or 
 
 ```sh
 docker run \
-	--name mssql \
-	-e "ACCEPT_EULA=Y" \
-	-e "MSSQL_SA_PASSWORD=yourStrong(!)Password" \
-	-p 1433:1433 \
-	-d \
-	mcr.microsoft.com/mssql/server:2022-latest
+    --name mssql \
+    -e "ACCEPT_EULA=Y" \
+    -e "MSSQL_SA_PASSWORD=yourStrong(!)Password" \
+    -p 1433:1433 \
+    -d \
+    mcr.microsoft.com/mssql/server:2022-latest
 ```
 
 You might need to apply the required migrations to the database. We're developing with a "code-first" approach, which means the models are defined in the code, and migrated from there (as opposed to defining them in a `*.EDMX` file). To do so, run: 
