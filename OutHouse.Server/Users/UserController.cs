@@ -38,8 +38,6 @@ namespace OutHouse.Server.Users
         [HttpPost(Name = "PostUser")]
         public ActionResult<User> Post(User user)
         {
-            //int newId = _context.Users.Select(x => x.UserId).Max() + 1;
-            //user.UserId = newId;
             _context.Users.Add(user);
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
