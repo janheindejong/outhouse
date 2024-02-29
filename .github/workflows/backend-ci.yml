@@ -4,15 +4,36 @@ on:
   push:
     branches:
       - main
-    paths: 
-      - 'backend/**'
   pull_request:
     branches:    
       - main
-    paths: 
-      - 'backend/**'
 
 jobs:
+  test: 
+    runs-on: ubuntu-latest 
+    steps: 
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 
+        uses: actions/setup-dotnet@v3
+        with: 
+          dotnet-version: '8.x'
+
+      - name: Install a SQL Server suite of tools
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlengine
+          sa-password: 'yourStrong(!)Password'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build
+
+      - name: Test with the dotnet CLI
+        run: dotnet test
+
   build:
     runs-on: ubuntu-latest
     defaults:
