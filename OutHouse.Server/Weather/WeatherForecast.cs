@@ -1,4 +1,4 @@
-namespace OutHouse.Server
+namespace OutHouse.Server.Weather
 {
     public class WeatherForecast
     {

@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutHouse.Server", "OutHouse.Server\OutHouse.Server.csproj", "{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutHouse.Server", "OutHouse.Server\OutHouse.Server.csproj", "{0249FEE1-AB10-431D-8CF0-4A6AFE8D0F44}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "outhouse.client", "outhouse.client\outhouse.client.esproj", "{BDE9C792-4A29-4D28-A9B1-62AF009313EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutHouse.Server.Tests", "OutHouse.Server.Tests\OutHouse.Server.Tests.csproj", "{268F745D-EF02-4F68-B75F-377846DD5E05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{942C7D58-1602-4860-8A20-3FAD21015C44}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +30,10 @@ Global
 		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BDE9C792-4A29-4D28-A9B1-62AF009313EB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{268F745D-EF02-4F68-B75F-377846DD5E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268F745D-EF02-4F68-B75F-377846DD5E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268F745D-EF02-4F68-B75F-377846DD5E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268F745D-EF02-4F68-B75F-377846DD5E05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
