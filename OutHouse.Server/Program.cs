@@ -14,8 +14,7 @@ namespace OutHouse.Server
             builder.Services.AddControllers();
 
             builder.Services.AddDbContext<UserContext>(
-                //options => options.UseSqlServer(builder.Configuration.GetConnectionString("OuthouseDb")));
-                options => options.UseSqlServer("Server=localhost,1433;Database=tempdb;User ID=sa;Password=yourStrong(!)Password;Persist Security Info=False;TrustServerCertificate=true;"));
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("OuthouseDb")));
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

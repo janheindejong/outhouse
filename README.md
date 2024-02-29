@@ -1,27 +1,71 @@
-# Our Cottage 
+# Outhouse 
 
-Our Cottage is a web-based appt that allows you and your family members to manage everything related to your family cottage. Think of things like having a shared calender, budgetting, shopping and to-do list, guestbook, you name it...
+Fun for the whole family...
 
-## Architecture
+## Architecture 
 
-The app has a pretty basic setup, with a front-end, a back-end, and an SQL database. For now, I deploy it on my Raspberry Pi based Kubernetes cluster; in future, I might migrate this to AWS or GCP. 
+The app uses ASP.NET to serve a React client-side SPA and a server-side API. The app connects to an MS SQL Server database. 
 
-```mermaid 
-flowchart LR
-    client -->|www.onsfamiliehuisje.nl| ingress 
-    subgraph k8s
-        ingress --> |/|fe[frontend]
-        ingress --> |/api/v1|be[backend]
-        be --> db[(SQL database)]
-    end
-``` 
+## Setup development environment 
 
-## Backlog
+To develop, you need to have .NET 8 installed, and perhaps node.js (maybe .NET installs this by itself, don't know). Furthermore, you need to have the .NET EF tools: 
 
-- [x] Setup CI/CD with Github Actions 
-- [x] Improve workflow scripts
-- [ ] Improve API routing
-- [ ] Back-end unittests
-- [ ] Basic front-end 
-- [ ] Authentication
-- [ ] Implement DNS rules
+```
+dotnet tool install --global dotnet-ef
+```
+
+Local development and running the test project require a MS SQL Server to be reachable at localhost:1443. The easiest, cross-platform way to do this is by running it in a Docker container, like so: 
+
+```PowerShell
+docker run `
+	--name mssql `
+	-e "ACCEPT_EULA=Y" `
+	-e "MSSQL_SA_PASSWORD=yourStrong(!)Password" `
+	-p 1433:1433 `
+	-d `
+	mcr.microsoft.com/mssql/server:2022-latest
+```
+
+...or 
+
+```sh
+docker run \
+	--name mssql \
+	-e "ACCEPT_EULA=Y" \
+	-e "MSSQL_SA_PASSWORD=yourStrong(!)Password" \
+	-p 1433:1433 \
+	-d \
+	mcr.microsoft.com/mssql/server:2022-latest
+```
+
+You might need to apply the required migrations to the database. We're developing with a "code-first" approach, which means the models are defined in the code, and migrated from there (as opposed to defining them in a `*.EDMX` file). To do so, run: 
+
+```PowerShell
+cd .\OutHouse.Server
+dotnet ef database update
+```
+
+...or 
+
+```sh
+cd ./OutHouse.Server
+dotnet ef database update
+```
+
+This will ensure you have the correct tables in a database named "OutHouseDbLocal".
+
+Now, you should be able to run the app, as follows: 
+
+```PowerShell
+cd .\OutHouse.Server
+dotnet run
+```
+
+...or 
+
+```sh
+cd ./OutHouse.Server
+dotnet run
+```
+
+This will launch both the front-end and the back-end separately.

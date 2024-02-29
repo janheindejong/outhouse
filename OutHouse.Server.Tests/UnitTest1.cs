@@ -18,7 +18,13 @@ namespace OutHouse.Server.Tests
         public void Setup()
         {
              _options = new DbContextOptionsBuilder<UserContext>()
-                .UseSqlServer("Server=localhost,1433;Database=testdb;User ID=sa;Password=yourStrong(!)Password;Persist Security Info=False;TrustServerCertificate=true;")
+                .UseSqlServer(
+                    "Server=localhost,1433;" +
+                    "Database=OutHouseDbTest;" +
+                    "User ID=sa;" +
+                    "Password=yourStrong(!)Password;" +
+                    "Persist Security Info=False;" +
+                    "TrustServerCertificate=true;")
                 .Options;
 
             _context = new UserContext(_options);
