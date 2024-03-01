@@ -70,4 +70,31 @@ cd ./OutHouse.Server
 dotnet run
 ```
 
-This will launch both the front-end and the back-end separately, with the front-end server by the Vite server (and hot reloadable).
+This will launch both the front-end and the back-end separately.
+
+## API 
+
+The API has the following endpoints: 
+
+Identity: 
+- `POST api/register` - Create new user
+- `PUT api/login` - Login user 
+
+https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-8.0
+
+MeController: 
+- `GET api/me` - Returns user information
+- `GET api/me/outhouses` - Returns list of houses user is member of
+- `GET api/me/bookings` - Returns list of all bookings of user (NOT IMPLEMENTED YET)
+
+OuthouseController
+- `POST api/outhouse` - create new outhouse
+- `GET,PUT api/outhouses/{id}` - modify outhouse
+- `GET,POST api/outhouses/{id}/members` - get members of house, or create new
+- `GET,POST api/outhouses/{id}/members/{id}` - modify member (NOT IMPLEMENTED YET)
+- `GET,POST api/outhouses/{id}/bookings` - get bookings of house, or create new (NOT IMPLEMENTED YET)
+- `PUT,DELETE api/outhouses/{id}/bookings/{id}` - modify booking (NOT IMPLEMENTED YET)
+
+We use Microsoft ASP.NET Core Identity to manage user information. 
+
+

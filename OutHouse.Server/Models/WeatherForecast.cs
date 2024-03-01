@@ -1,4 +1,4 @@
-namespace OutHouse.Server.Weather
+﻿namespace OutHouse.Server.Models
 {
     public class WeatherForecast
     {
