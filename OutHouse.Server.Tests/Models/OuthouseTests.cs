@@ -14,7 +14,7 @@ namespace OutHouse.Server.Tests.Models
         public void AddMember_ReturnsSuccess()
         {
             Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.AddMember(nonMemberUser, Role.Member, adminUser);
+            Result<Member> result = outhouse.AddMember(nonMemberUser, Role.Member, adminUser);
             result.IsSuccess.Should().BeTrue();
             outhouse.Members.Count.Should().Be(3);
         }
@@ -24,7 +24,7 @@ namespace OutHouse.Server.Tests.Models
         {
             // Arrange
             Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.AddMember(memberUser, Role.Member, adminUser);
+            Result<Member> result = outhouse.AddMember(memberUser, Role.Member, adminUser);
             result.IsSuccess.Should().BeFalse();
             outhouse.Members.Count.Should().Be(2);
         }
@@ -33,7 +33,7 @@ namespace OutHouse.Server.Tests.Models
         public void AddMember_NonAdmin_ReturnsFailure()
         {
             Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.AddMember(nonMemberUser, Role.Member, memberUser);
+            Result<Member> result = outhouse.AddMember(nonMemberUser, Role.Member, memberUser);
             result.IsSuccess.Should().BeFalse();
             outhouse.Members.Count.Should().Be(2);
         }
