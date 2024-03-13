@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using OutHouse.Server.Base;
-using OutHouse.Server.Weather;
+using OutHouse.Server.Models;
 
 namespace OutHouse.Server.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : MyControllerBase
+    public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
