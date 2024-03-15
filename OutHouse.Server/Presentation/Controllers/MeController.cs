@@ -6,7 +6,6 @@ using OutHouse.Server.DataAccess;
 
 namespace OutHouse.Server.Presentation.Controllers
 {
-    [ApiController]
     [Authorize]
     [Route("api/[controller]")]
     public class MeController(

@@ -2,7 +2,7 @@
 using OutHouse.Server.Domain.Exceptions;
 using OutHouse.Server.Models;
 
-namespace OutHouse.Server.Tests.Models
+namespace OutHouse.Server.Tests.Domain
 {
     public class OuthouseTests
     {

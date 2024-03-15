@@ -6,15 +6,14 @@ using OutHouse.Server.DataAccess;
 
 namespace OutHouse.Server.Presentation.Controllers
 {
-    [ApiController]
     [Authorize]
     [Route("api/outhouses")]
-    public class OuthousesController(
-        ILogger<OuthousesController> logger,
+    public class OuthouseController(
+        ILogger<OuthouseController> logger,
         ApplicationDbContext context)
             : ApplicationBaseController
     {
-        private readonly ILogger<OuthousesController> _logger = logger;
+        private readonly ILogger<OuthouseController> _logger = logger;
 
         private OuthouseService Service => new(context, UserContext);
 
