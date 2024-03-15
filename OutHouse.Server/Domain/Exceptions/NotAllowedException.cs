@@ -1,0 +1,15 @@
+﻿namespace OutHouse.Server.Domain.Exceptions
+{
+    public class NotAllowedException(string action, string item, Guid id, string reason)
+       : Exception($"Can't {action} {item} {id}; {reason}")
+    {
+        public string Action { get => action; }
+
+        public string Item { get => item; }
+
+        public Guid Id { get => id; }
+
+        public string Reason { get => reason; }
+
+    }
+}

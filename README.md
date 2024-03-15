@@ -96,5 +96,3 @@ OuthouseController
 - `PUT,DELETE api/outhouses/{id}/bookings/{id}` - modify booking (NOT IMPLEMENTED YET)
 
 We use Microsoft ASP.NET Core Identity to manage user information. 
-
-

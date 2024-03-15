@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OutHouse.Server.Domain.Exceptions;
 using OutHouse.Server.Models;
 
 namespace OutHouse.Server.Tests.Models
@@ -6,73 +7,56 @@ namespace OutHouse.Server.Tests.Models
     public class OuthouseTests
     {
 
-        private static readonly UserStub adminUser = new(Guid.NewGuid());
-        private static readonly UserStub memberUser = new(Guid.NewGuid());
-        private static readonly UserStub nonMemberUser = new(Guid.NewGuid());
+        private record struct MemberData(string Email, string Name, Guid Id);
+
+        private static readonly MemberData owner = new("karel@gmail.com", "Karel", Guid.NewGuid());
+        private static readonly MemberData admin = new("piet@gmail.com", "Piet", Guid.NewGuid());
+        private static readonly MemberData member = new("kees@gmail.com", "Kees", Guid.NewGuid());
+        private static readonly MemberData guest = new("jan@gmail.com", "Jan", Guid.NewGuid());
 
         [Test]
-        public void AddMember_ReturnsSuccess()
+        public void AddMember()
         {
             Outhouse outhouse = GetOuthouse();
-            Result<Member> result = outhouse.AddMember(nonMemberUser, Role.Member, adminUser);
-            result.IsSuccess.Should().BeTrue();
-            outhouse.Members.Count.Should().Be(3);
+            Member member = outhouse.AddMember(guest.Email, guest.Name, Role.Member);
+            outhouse.Members.Count.Should().Be(4);
+            member.Email.Should().Be(guest.Email);
+            member.Name.Should().Be(guest.Name);
         }
 
         [Test]
-        public void AddMember_AlreadyExisting_ReturnsFailure()
+        public void AddMember_AlreadyExisting_ThrowsException()
         {
             // Arrange
             Outhouse outhouse = GetOuthouse();
-            Result<Member> result = outhouse.AddMember(memberUser, Role.Member, adminUser);
-            result.IsSuccess.Should().BeFalse();
+            Func<Member> act = () => outhouse.AddMember(member.Email, member.Name, Role.Member);
+            act.Should().Throw<SeeOtherException>();
+        }
+
+        [Test]
+        public void DeleteMember()
+        {
+            Outhouse outhouse = GetOuthouse();
+            Member member = outhouse.DeleteMember(admin.Id);
+            member.Email.Should().Be(admin.Email);
+            member.Name.Should().Be(admin.Name);
             outhouse.Members.Count.Should().Be(2);
         }
 
         [Test]
-        public void AddMember_NonAdmin_ReturnsFailure()
+        public void DeleteMember_Owner_ThrowsException()
         {
             Outhouse outhouse = GetOuthouse();
-            Result<Member> result = outhouse.AddMember(nonMemberUser, Role.Member, memberUser);
-            result.IsSuccess.Should().BeFalse();
-            outhouse.Members.Count.Should().Be(2);
+            Func<Member> act = () => outhouse.DeleteMember(owner.Id);
+            act.Should().Throw<NotAllowedException>();
         }
 
         [Test]
-        public void ModifyMemberRole_ReturnsSuccess()
+        public void ModifyMemberRole_Owner_ThrowsException()
         {
             Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.ModifyMemberRole(memberUser, Role.Admin, adminUser);
-            result.IsSuccess.Should().BeTrue();
-            outhouse.Members.Count.Should().Be(2);
-            outhouse.Members.Where(x => x.Role == Role.Admin).Count().Should().Be(2);
-        }
-
-        [Test]
-        public void DeleteMember_ReturnsSuccess()
-        {
-            Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.DeleteMember(memberUser, adminUser);
-            result.IsSuccess.Should().BeTrue();
-            outhouse.Members.Count.Should().Be(1);
-        }
-
-        [Test]
-        public void DeleteMember_SameUser_ReturnsSuccess()
-        {
-            Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.DeleteMember(memberUser, memberUser);
-            result.IsSuccess.Should().BeTrue();
-            outhouse.Members.Count.Should().Be(1);
-        }
-
-        [Test]
-        public void DeleteMember_LastAdmin_ReturnsFailure()
-        {
-            Outhouse outhouse = GetOuthouse();
-            Result result = outhouse.DeleteMember(adminUser, adminUser);
-            result.IsSuccess.Should().BeFalse();
-            outhouse.Members.Count.Should().Be(2);
+            Func<Member> act = () => outhouse.ModifyMemberRole(owner.Id, Role.Admin);
+            act.Should().Throw<NotAllowedException>();
         }
 
         private static Outhouse GetOuthouse()
@@ -81,20 +65,28 @@ namespace OutHouse.Server.Tests.Models
             outhouse.Members.Add(
                 new Member()
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = adminUser.Id,
+                    Id = owner.Id,
+                    Email = owner.Email,
+                    Name = owner.Name,
+                    Role = Role.Owner,
+                });
+            outhouse.Members.Add(
+                new Member()
+                {
+                    Id = admin.Id,
+                    Email = admin.Email,
+                    Name = admin.Name,
                     Role = Role.Admin,
                 });
             outhouse.Members.Add(
                 new Member()
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = memberUser.Id,
+                    Id = member.Id,
+                    Email = member.Email,
+                    Name = member.Name,
                     Role = Role.Member,
                 });
             return outhouse;
         }
-
-        private record class UserStub(Guid Id) : IUser;
     }
 }
