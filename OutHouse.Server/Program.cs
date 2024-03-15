@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OutHouse.Server.DataAccess;
-using OutHouse.Server.Models;
+using OutHouse.Server.Domain;
 
 namespace OutHouse.Server
 {

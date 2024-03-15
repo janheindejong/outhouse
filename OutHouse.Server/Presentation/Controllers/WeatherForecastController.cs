@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OutHouse.Server.Models;
 
-namespace OutHouse.Server.Controllers
+namespace OutHouse.Server.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]

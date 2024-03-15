@@ -1,6 +1,6 @@
 ﻿using OutHouse.Server.Models;
 
-namespace OutHouse.Server.Controllers
+namespace OutHouse.Server.Application.Mappers
 {
     public static class Mapper
     {
@@ -11,10 +11,7 @@ namespace OutHouse.Server.Controllers
 
         public static MemberDto ToDto(this Member member)
         {
-            return new(member.Id, member.UserId);
+            return new(member.Id, member.Email, member.Name);
         }
     }
-
-    public record class OuthouseDto(Guid Id, string Name);
-    public record class MemberDto(Guid Id, Guid UserId);
 }

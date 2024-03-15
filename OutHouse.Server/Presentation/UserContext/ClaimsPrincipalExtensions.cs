@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace OutHouse.Server.Identity
+namespace OutHouse.Server.Presentation.Identity
 {
     internal static class ClaimsPrincipalExtensions
     {
