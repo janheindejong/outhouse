@@ -2,16 +2,9 @@
 
 Fun for the whole family...
 
-## Architecture
+## Domain model
 
-The app uses ASP.NET to serve a React client-side SPA and a server-side API. The app connects to an MS SQL Server database. The back-end uses an Onion architecture pattern, somewhat akin to [this example](https://code-maze.com/onion-architecture-in-aspnetcore/). We define the following layers: 
-
-- **Domain**
-- **Service**
-- **Infrastructure**
-- **Presentation**
-
-Our domain model looks something like this: 
+The domain model of the application looks something like this: 
 
 ```mermaid 
 classDiagram
@@ -47,7 +40,18 @@ Outhouse *-- "1..*" Member
 Outhouse *-- "0..*" Booking
 ```
 
-The application also has users, with their e-mail as username. There is a weak coupling between the member `Email` field, and the `Email` field in the bookings and membership. This means you can add bookings and memberships to outhouses based on an e-mail address, even if that user does not have an account yet. Let's see how this develops over time.
+There is a weak coupling between the member `Email` field, and the `Email` field in the bookings and membership. This means you can add bookings and memberships to outhouses based on an e-mail address, even if that user does not have an account yet. Let's see how this develops over time. 
+
+Members can view, book, or modify an outhouse, depening on their role (Owner, Admin or Member). 
+
+## Architecture
+
+The app uses ASP.NET to serve a React client-side SPA and a server-side API. The app connects to an MS SQL Server database. The back-end uses an Onion architecture pattern, somewhat akin to [this example](https://code-maze.com/onion-architecture-in-aspnetcore/). We define the following layers: 
+
+- **Domain**
+- **Service**
+- **Infrastructure**
+- **Presentation**
 
 ## Setup development environment
 
@@ -57,7 +61,7 @@ To develop, you need to have .NET 8 installed, and node.js. Furthermore, you nee
 dotnet tool install --global dotnet-ef
 ```
 
-Local development and running the test project require a MS SQL Server to be reachable at localhost:1443. The easiest, cross-platform way to do this is by running it in a Docker container, like so:
+Local development requires an MS SQL Server to be reachable on localhost:1443. The easiest cross-platform way to do this is by running it in a Docker container, like so:
 
 ```PowerShell
 docker run `
@@ -69,7 +73,7 @@ docker run `
     mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-...or on Mac/Linux
+...or on MacOS/Linux
 
 ```sh
 docker run \
@@ -81,7 +85,7 @@ docker run \
     mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-Once you have done this once, you can restart the container using `docker start mssql`.
+This creates, runs and exposes a container with MS SQL Server running in it. When you turn off your PC, the container is stopped, but not deleted. You can restart the existing container using `docker start mssql`. If you want to start fresh, you can remove the container with `docker rm mssql`.
 
 When there is an update to the datamodel, or when you are with a fresh database, you might need to apply the required migrations to the database. We're developing with a "code-first" approach, which means the models are defined in the code, and migrated from there (as opposed to defining them in a `*.EDMX` file). To do so, run:
 
@@ -95,7 +99,7 @@ This will ensure you have the correct tables in a database named "OutHouseDbLoca
 dotnet run --project ./OutHouse.Server/OutHouse.Server.csproj
 ```
 
-This will launch both the front-end and the back-end separately.
+This will launch both back-end, and the front-end running on a seperate development server, with hot reloading. In production, the front-end is built, and the static files are served by the back-end server, allowing for the entire app to be deployed as a single process. 
 
 ## API 
 
