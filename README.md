@@ -4,7 +4,50 @@ Fun for the whole family...
 
 ## Architecture
 
-The app uses ASP.NET to serve a React client-side SPA and a server-side API. The app connects to an MS SQL Server database.
+The app uses ASP.NET to serve a React client-side SPA and a server-side API. The app connects to an MS SQL Server database. The back-end uses an Onion architecture pattern, somewhat akin to [this example](https://code-maze.com/onion-architecture-in-aspnetcore/). We define the following layers: 
+
+- **Domain**
+- **Service**
+- **Infrastructure**
+- **Presentation**
+
+Our domain model looks something like this: 
+
+```mermaid 
+classDiagram
+
+class Outhouse {
+   +Guid Id
+   +string Name 
+   +ICollection<Member> Members
+   +ICollection<Booking> Bookings
+}
+
+class Member {
+   +Guid Id 
+   +string Name 
+   +string Email
+   +Role Role
+}
+
+class Booking {
+    +Guid Id
+    +Date FromDate
+    +Date ToDate
+    +string Email
+    +bool IsApproved
+}
+
+class User {
+    +string Email
+    +string Password
+}
+
+Outhouse *-- "1..*" Member
+Outhouse *-- "1..*" Booking
+```
+
+The application also has users, with their e-mail as username. There is a weak coupling between the member `Email` field, and the `Email` field in the bookings and membership. This means you can add bookings and memberships to outhouses based on an e-mail address, even if that user does not have an account yet. Let's see how this develops over time.
 
 ## Setup development environment
 
@@ -26,7 +69,7 @@ docker run `
     mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-...or
+...or on Mac/Linux
 
 ```sh
 docker run \
@@ -38,36 +81,18 @@ docker run \
     mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-Once you have done this once, after closing your PC, you can simply run `docker start mssql`.
+Once you have done this once, you can restart the container using `docker start mssql`.
 
 When there is an update to the datamodel, or when you are with a fresh database, you might need to apply the required migrations to the database. We're developing with a "code-first" approach, which means the models are defined in the code, and migrated from there (as opposed to defining them in a `*.EDMX` file). To do so, run:
 
-```PowerShell
-cd .\OutHouse.Server
-dotnet ef database update
+```sh
+dotnet ef database update --project ./OutHouse.Server/OutHouse.Server.csproj
 ```
 
-...or
+This will ensure you have the correct tables in a database named "OutHouseDbLocal". Now you should be able to run the app as follows:
 
 ```sh
-cd ./OutHouse.Server
-dotnet ef database update
-```
-
-This will ensure you have the correct tables in a database named "OutHouseDbLocal".
-
-Now, you should be able to run the app, as follows:
-
-```PowerShell
-cd .\OutHouse.Server
-dotnet run
-```
-
-...or
-
-```sh
-cd ./OutHouse.Server
-dotnet run
+dotnet run --project ./OutHouse.Server/OutHouse.Server.csproj
 ```
 
 This will launch both the front-end and the back-end separately.
@@ -80,7 +105,7 @@ Identity:
 - `POST api/register` - Create new user
 - `PUT api/login` - Login user 
 
-https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-8.0
+We use Microsoft ASP.NET Core Identity to manage user information, see [documentation](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-8.0).
 
 MeController: 
 - `GET api/me` - Returns user information
@@ -89,10 +114,12 @@ MeController:
 
 OuthouseController
 - `POST api/outhouse` - create new outhouse
-- `GET,PUT api/outhouses/{id}` - modify outhouse
-- `GET,POST api/outhouses/{id}/members` - get members of house, or create new
-- `GET,POST api/outhouses/{id}/members/{id}` - modify member (NOT IMPLEMENTED YET)
-- `GET,POST api/outhouses/{id}/bookings` - get bookings of house, or create new (NOT IMPLEMENTED YET)
-- `PUT,DELETE api/outhouses/{id}/bookings/{id}` - modify booking (NOT IMPLEMENTED YET)
+- `GET,DELETE api/outhouses/{id}` - get or delete outhouse
 
-We use Microsoft ASP.NET Core Identity to manage user information. 
+OuthouseMemberController
+- `GET,POST api/outhouses/{id}/members` - get members of house, or create new
+- `DELETE api/outhouses/{id}/members/{id}` - delete member
+
+OuthouseBookingController (NOT IMPLEMENTED YET)
+- `GET,POST api/outhouses/{id}/bookings` - get bookings of house, or create new
+- `PUT,DELETE api/outhouses/{id}/bookings/{id}` - modify or delete booking

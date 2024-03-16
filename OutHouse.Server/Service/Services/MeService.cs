@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OutHouse.Server.Application.Mappers;
-using OutHouse.Server.DataAccess;
-using OutHouse.Server.Handlers;
+using OutHouse.Server.Service.Mappers;
 
-namespace OutHouse.Server.Application.Services
+namespace OutHouse.Server.Service.Services
 {
     public class MeService(
-        ApplicationDbContext dbContext,
+        IDbContext dbContext,
         IUserContext userContext)
             : BaseService(dbContext, userContext)
     {
