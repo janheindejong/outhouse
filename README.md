@@ -44,7 +44,7 @@ class User {
 }
 
 Outhouse *-- "1..*" Member
-Outhouse *-- "1..*" Booking
+Outhouse *-- "0..*" Booking
 ```
 
 The application also has users, with their e-mail as username. There is a weak coupling between the member `Email` field, and the `Email` field in the bookings and membership. This means you can add bookings and memberships to outhouses based on an e-mail address, even if that user does not have an account yet. Let's see how this develops over time.
