@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OutHouse.Server.Application.Mappers;
-using OutHouse.Server.DataAccess;
+using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Domain.Exceptions;
-using OutHouse.Server.Handlers;
 using OutHouse.Server.Models;
 
-namespace OutHouse.Server.Application.Services
+namespace OutHouse.Server.Service.Services
 {
     public class OuthouseMemberService(
-        ApplicationDbContext dbContext,
+        IDbContext dbContext,
         IUserContext userContext,
         Guid outhouseId)
             : BaseService(dbContext, userContext)

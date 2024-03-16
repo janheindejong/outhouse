@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OutHouse.Server.Application.Mappers;
-using OutHouse.Server.Application.Services;
-using OutHouse.Server.DataAccess;
+using OutHouse.Server.Service.Mappers;
+using OutHouse.Server.Service.Services;
+using OutHouse.Server.Infrastructure;
 
 namespace OutHouse.Server.Presentation.Controllers
 {

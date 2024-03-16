@@ -1,6 +1,6 @@
 ﻿using OutHouse.Server.Models;
 
-namespace OutHouse.Server.Application.Mappers
+namespace OutHouse.Server.Service.Mappers
 {
     public static class Mapper
     {

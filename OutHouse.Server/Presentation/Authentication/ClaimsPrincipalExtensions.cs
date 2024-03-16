@@ -12,5 +12,11 @@ namespace OutHouse.Server.Presentation.Identity
                 parsedUserId :
                 throw new ApplicationException("User id is unavailable");
         }
+
+        public static string GetUserEmail(this ClaimsPrincipal? principal)
+        {
+            return principal?.FindFirstValue(ClaimTypes.Email) 
+                ?? throw new ApplicationException("User email is unavailable");
+        }
     }
 }

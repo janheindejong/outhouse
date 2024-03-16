@@ -1,4 +1,4 @@
-﻿namespace OutHouse.Server.Application.Mappers
+﻿namespace OutHouse.Server.Service.Mappers
 {
     public interface IEntity
     {
