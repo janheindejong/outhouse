@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace OutHouse.Server
 {
@@ -8,7 +9,7 @@ namespace OutHouse.Server
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -29,15 +30,17 @@ namespace OutHouse.Server
             // Azure Logging; this is necessary for logs to show up in the Azure App Service
             builder.Logging.AddAzureWebAppDiagnostics();
 
-            var app = builder.Build();
+            // Build app
+            WebApplication app = builder.Build();
 
+            // Serve front-end
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             // Add Identity routes
-            app.MapIdentityApi<User>();
+            app.MapGroup("/api").MapIdentityApi<User>();
 
-            // Configure the HTTP request pipeline.
+            // Enable Swagger
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -45,12 +48,11 @@ namespace OutHouse.Server
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
             app.MapControllers();
-
             app.MapFallbackToFile("/index.html");
 
+            // Run, Forest!
             app.Run();
         }
     }
