@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Domain;
-using Microsoft.AspNetCore.Identity;
 
 namespace OutHouse.Server
 {
@@ -26,19 +25,28 @@ namespace OutHouse.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            
+
             // Azure Logging; this is necessary for logs to show up in the Azure App Service
             builder.Logging.AddAzureWebAppDiagnostics();
 
             // Build app
             WebApplication app = builder.Build();
 
-            // Serve front-end
+            // Apply migrations; when we go live this will need to be taken out for sure! 
+            using (IServiceScope scope = app.Services.CreateScope())
+            {
+                ApplicationDbContext dataContext = scope.ServiceProvider
+                    .GetRequiredService<ApplicationDbContext>();
+                dataContext.Database.Migrate();
+            }
+
+            // Configure SPA front-end
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            // Add Identity routes
+            // Add endpoints
             app.MapGroup("/api").MapIdentityApi<User>();
+            app.MapControllers();
 
             // Enable Swagger
             if (app.Environment.IsDevelopment())
@@ -47,9 +55,9 @@ namespace OutHouse.Server
                 app.UseSwaggerUI();
             }
 
+            // Do some more stuff...
             app.UseHttpsRedirection();
             app.UseAuthorization();
-            app.MapControllers();
             app.MapFallbackToFile("/index.html");
 
             // Run, Forest!
