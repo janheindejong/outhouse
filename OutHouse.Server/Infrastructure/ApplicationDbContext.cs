@@ -12,5 +12,13 @@ namespace OutHouse.Server.Infrastructure
     {
         public DbSet<Outhouse> Outhouses { get; set; }
         public DbSet<Member> Members { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<User>().HasData(SeedData.Users);
+            builder.Entity<Outhouse>().HasData(SeedData.Outhouses);
+            builder.Entity<Member>().HasData(SeedData.Members);
+        }
     }
 }
