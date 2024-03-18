@@ -14,7 +14,7 @@ namespace OutHouse.Server.Service.Services
         public async Task<OuthouseDto> GetOuthouseByIdAsync(Guid outhouseId)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
-            if (!outhouse.IsMember(UserContext.Email))
+            if (!outhouse.HasMember(UserContext.Email))
             {
                 throw new ForbiddenException("read", "Outhouse", outhouseId);
             }
@@ -33,7 +33,7 @@ namespace OutHouse.Server.Service.Services
         public async Task<OuthouseDto> RemoveOuthouseAsync(Guid outhouseId)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
-            if (!outhouse.HasOwnerPrivileges(UserContext.Email))
+            if (!outhouse.HasOwner(UserContext.Email))
             {
                 throw new ForbiddenException("delete", "Outhouse", outhouseId);
             }

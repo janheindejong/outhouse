@@ -17,7 +17,7 @@ namespace OutHouse.Server.Service.Services
         {
             Outhouse outhouse = await GetOuthouse();
 
-            if (!outhouse.IsMember(UserContext.Email))
+            if (!outhouse.HasMember(UserContext.Email))
             {
                 throw new ForbiddenException("get members of", "Outhouse", outhouseId);
             }
@@ -31,7 +31,7 @@ namespace OutHouse.Server.Service.Services
         {
             Outhouse outhouse = await GetOuthouse();
 
-            if (!outhouse.HasAdminPrivileges(UserContext.Email))
+            if (!outhouse.HasAdmin(UserContext.Email))
             {
                 throw new ForbiddenException("add members to", "Outhouse", outhouseId);
             }
@@ -45,7 +45,7 @@ namespace OutHouse.Server.Service.Services
         {
             Outhouse outhouse = await GetOuthouse(); 
 
-            if (!outhouse.HasAdminPrivileges(UserContext.Email))
+            if (!outhouse.HasAdmin(UserContext.Email))
             {
                 throw new ForbiddenException("remove members from", "Outhouse", outhouseId);
             }

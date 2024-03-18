@@ -13,6 +13,10 @@
         public Outhouse Outhouse { get; set; } = null!;
 
         public Role Role { get; set; }
+
+        public bool HasOwnerPrivileges => Role == Role.Owner;
+
+        public bool HasAdminPrivileges => Role == Role.Owner || Role == Role.Admin;
     } 
 
     public enum Role { Owner, Admin, Member }

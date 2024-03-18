@@ -13,7 +13,7 @@ namespace OutHouse.Server.Models
 
         public Member AddMember(string email, string name, Role role)
         {
-            if (IsMember(email))
+            if (HasMember(email))
             {
                 Guid id = Members.Where(x => x.Email == email).First().Id;
                 throw new SeeOtherException("AddMember", "Member", id);
@@ -82,19 +82,25 @@ namespace OutHouse.Server.Models
             return outhouse;
         }
 
-        public bool HasOwnerPrivileges(string userEmail)
-        {
-            return Members.Any(x => x.Email == userEmail && x.Role == Role.Owner);
+        public Member? GetMemberByEmail(string email) { 
+            return Members.Where(x => x.Email == email).SingleOrDefault();
         }
 
-        public bool HasAdminPrivileges(string userEmail)
+        public bool HasOwner(string email)
         {
-            return Members.Any(x => x.Email == userEmail && (x.Role == Role.Admin || x.Role == Role.Owner));
+            Member? member = GetMemberByEmail(email);
+            return member != null && member.HasOwnerPrivileges;
         }
 
-        public bool IsMember(string userEmail)
+        public bool HasAdmin(string email)
         {
-            return Members.Any(x => x.Email == userEmail);
+            Member? member = GetMemberByEmail(email);
+            return member != null && member.HasAdminPrivileges;
+        }
+
+        public bool HasMember(string email)
+        {
+            return GetMemberByEmail(email) != null;
         }
     }
 }

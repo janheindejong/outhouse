@@ -18,7 +18,8 @@ namespace OutHouse.Server.Infrastructure
 
         public static List<Outhouse> Outhouses { get; } = 
         [
-            CreateOuthouse("acdd236c-e699-434b-9024-48e614b1ae58", "My Outhouse")
+            CreateOuthouse("acdd236c-e699-434b-9024-48e614b1ae58", "My Outhouse"),
+            CreateOuthouse("008f84df-f856-4a4d-b92b-314cdecd6fab", "Orphan Outhouse")
         ];
 
         public static List<Member> Members { get; } =
