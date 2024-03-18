@@ -48,7 +48,7 @@ namespace OutHouse.Server.Service.Services
             return await DbContext.Outhouses
                 .Where(x => x.Id == outhouseId)
                 .Include(x => x.Members)
-                .FirstOrDefaultAsync()
+                .SingleOrDefaultAsync()
                     ?? throw new NotFoundException("Outhouse", outhouseId);
         }
     }
