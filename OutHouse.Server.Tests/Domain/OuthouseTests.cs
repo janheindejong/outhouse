@@ -9,10 +9,10 @@ namespace OutHouse.Server.Tests.Domain
 
         private record struct MemberData(string Email, string Name, Guid Id);
 
-        private static readonly MemberData owner = new("karel@gmail.com", "Karel", Guid.NewGuid());
-        private static readonly MemberData admin = new("piet@gmail.com", "Piet", Guid.NewGuid());
-        private static readonly MemberData member = new("kees@gmail.com", "Kees", Guid.NewGuid());
-        private static readonly MemberData guest = new("jan@gmail.com", "Jan", Guid.NewGuid());
+        private static readonly MemberData owner = new("owner@outhouse.com", "Owner", Guid.NewGuid());
+        private static readonly MemberData admin = new("admin@outhouse.com", "Admin", Guid.NewGuid());
+        private static readonly MemberData member = new("member@outhouse.com", "Member", Guid.NewGuid());
+        private static readonly MemberData guest = new("guest@outhouse.com", "Guest", Guid.NewGuid());
 
         [Test]
         public void AddMember()
@@ -58,6 +58,41 @@ namespace OutHouse.Server.Tests.Domain
             Func<Member> act = () => outhouse.ModifyMemberRole(owner.Id, Role.Admin);
             act.Should().Throw<NotAllowedException>();
         }
+
+        [TestCase("owner@outhouse.com", true)]
+        [TestCase("admin@outhouse.com", false)]
+        [TestCase("member@outhouse.com", false)]
+        [TestCase("guest@outhouse.com", false)]
+        public void HasOwner(string email, bool expected)
+        {
+            Outhouse outhouse = GetOuthouse();
+            bool result = outhouse.HasOwner(email);
+            result.Should().Be(expected);
+        }
+
+        [TestCase("owner@outhouse.com", true)]
+        [TestCase("admin@outhouse.com", true)]
+        [TestCase("member@outhouse.com", false)]
+        [TestCase("guest@outhouse.com", false)]
+        public void HasAdmin(string email, bool expected)
+        {
+            Outhouse outhouse = GetOuthouse();
+            bool result = outhouse.HasAdmin(email);
+            result.Should().Be(expected);
+        }
+
+        [TestCase("owner@outhouse.com", true)]
+        [TestCase("admin@outhouse.com", true)]
+        [TestCase("member@outhouse.com", true)]
+        [TestCase("guest@outhouse.com", false)]
+        public void HasMember(string email, bool expected)
+        {
+            Outhouse outhouse = GetOuthouse();
+            bool result = outhouse.HasMember(email);
+            result.Should().Be(expected);
+        }
+
+
 
         private static Outhouse GetOuthouse()
         {

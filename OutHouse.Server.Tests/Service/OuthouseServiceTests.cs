@@ -75,7 +75,7 @@ namespace OutHouse.Server.Tests.Service
             using (new AssertionScope())
             {
                 result?.Id.Should().Be(OuthouseId);
-                dbContext.Outhouses.Should().BeEmpty();
+                dbContext.Outhouses.Should().HaveCount(1);
             }
         }
 
@@ -90,7 +90,7 @@ namespace OutHouse.Server.Tests.Service
             using (new AssertionScope())
             {
                 await act.Should().ThrowAsync<ForbiddenException>();
-                dbContext.Outhouses.Should().HaveCount(1);
+                dbContext.Outhouses.Should().HaveCount(2);
             }
         }
     }
