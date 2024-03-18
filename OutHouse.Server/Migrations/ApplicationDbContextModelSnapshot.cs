@@ -223,13 +223,13 @@ namespace OutHouse.Server.Migrations
                         {
                             Id = new Guid("2164d31d-b9ce-4a89-8737-c187dfacee09"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8822ee1c-0b75-48cb-bd95-460892b5dc40",
+                            ConcurrencyStamp = "b327db39-e506-4e1e-9761-07fd6c833c07",
                             Email = "owner@outhouse.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "OWNER@OUTHOUSE.COM",
                             NormalizedUserName = "OWNER@OUTHOUSE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMxoXaKy0Bud0StZFPPf5mXNbEL7WJMLP0IdOIqf2PD3etF4XSMBF8YnrBMHKV8Jrw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBECqckpJcamcjLxhTikBUbIYVwmiRGForlsUR68dkrD7HUGkElUZYpDLJla5dQXYA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "35a6c895-a2b9-4353-a9db-e0b7bf0816cf",
                             TwoFactorEnabled = false,
@@ -239,13 +239,13 @@ namespace OutHouse.Server.Migrations
                         {
                             Id = new Guid("67fc65f0-e6bb-461c-8f35-b57e280ac5b6"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0fa8b915-5411-4d64-bebe-715ce79f0e34",
+                            ConcurrencyStamp = "4fdf832a-11e4-4fc2-97e5-2779bb7da145",
                             Email = "admin@outhouse.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@OUTHOUSE.COM",
                             NormalizedUserName = "ADMIN@OUTHOUSE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEC1MX4h+By92E/wQTpaL1eIeiJVcE9pDdUgzWwzHG8xveJHGqwMBqM96Pio4X86ug==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC0CCMf/b0w7MR/tq1/GjevJOfKzONaWO6QMXqZgtss7mEoiimqQEeotsvYKlJQCpw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "cedb285f-cc71-4ffe-a1fe-21847c131aae",
                             TwoFactorEnabled = false,
@@ -255,13 +255,13 @@ namespace OutHouse.Server.Migrations
                         {
                             Id = new Guid("4efeaa82-2c96-4d99-ba7c-bce6b3901f26"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "77daa6dd-1b87-4c69-a426-f4f68dfd8032",
+                            ConcurrencyStamp = "430f3ca5-23be-41ea-b474-f102bbe72002",
                             Email = "member@outhouse.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MEMBER@OUTHOUSE.COM",
                             NormalizedUserName = "MEMBER@OUTHOUSE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE91UXhvl3iqR69ltrqEARNQwxSLUj3lWZyuKm0K+/AmY8BgCL0x89pvxPRsm6iJuw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECMFccanwNLdVlOPQRpWfJdKRTPZSUGsJ+MYS/gUh+azJDl+PFjbXxRHV2o+OJFJgg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "978213ec-e24b-47ad-900c-c08a759bc25c",
                             TwoFactorEnabled = false,
@@ -271,13 +271,13 @@ namespace OutHouse.Server.Migrations
                         {
                             Id = new Guid("a6050009-75b2-48a0-a591-5759f3065af3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "785ae725-50c2-400a-aa27-5caadf216622",
+                            ConcurrencyStamp = "904d7340-39dc-4b66-803c-8518c7db226b",
                             Email = "guest@outhouse.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST@OUTHOUSE.COM",
                             NormalizedUserName = "GUEST@OUTHOUSE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJsjrprtW9aTZ6x0meULdeUI4U9gIwJNsNQcl6WnEwrv0X11GcqPMv+V12KaSkCZMg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJgr35akxGgpVRjexBaa94Rq4LXc6wX0Z8VruBIXmn5DWqXtJFHIeFvLgVa8huy8sw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "9ecbc49e-438b-45a0-b804-594cd8822bf3",
                             TwoFactorEnabled = false,
@@ -357,6 +357,11 @@ namespace OutHouse.Server.Migrations
                         {
                             Id = new Guid("acdd236c-e699-434b-9024-48e614b1ae58"),
                             Name = "My Outhouse"
+                        },
+                        new
+                        {
+                            Id = new Guid("008f84df-f856-4a4d-b92b-314cdecd6fab"),
+                            Name = "Orphan Outhouse"
                         });
                 });
 
