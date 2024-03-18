@@ -31,15 +31,7 @@ namespace OutHouse.Server
 
             // Build app
             WebApplication app = builder.Build();
-
-            // Apply migrations; when we go live this will need to be taken out for sure! 
-            using (IServiceScope scope = app.Services.CreateScope())
-            {
-                ApplicationDbContext dataContext = scope.ServiceProvider
-                    .GetRequiredService<ApplicationDbContext>();
-                dataContext.Database.Migrate();
-            }
-
+            
             // Configure SPA front-end
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -48,11 +40,16 @@ namespace OutHouse.Server
             app.MapGroup("/api").MapIdentityApi<User>();
             app.MapControllers();
 
-            // Enable Swagger
             if (app.Environment.IsDevelopment())
             {
+                // Enable Swagger
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                // Seed development database
+                using IServiceScope scope = app.Services.CreateScope();
+                ApplicationDbContext dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dataContext.Database.EnsureCreated();
             }
 
             // Do some more stuff...
