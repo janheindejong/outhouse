@@ -9,12 +9,27 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function submitForm(event) {
-    console.log("hi");
-    event.preventDefault();
+  async function submitForm(event) {
+      console.log("hi");
+      event.preventDefault();
 
-    setEmail("");
-    setPassword("");
+      var response = await fetch("api/login", {
+          method: "POST",
+          body: JSON.stringify({
+              email: email,
+              password: password,
+          }),
+          headers: {
+              "accept": "application/json",
+              "Content-type": "application/json"
+          }
+      });
+
+      var data = await response.json();
+      console.log(data["accessToken"]);
+
+      setEmail("");
+      setPassword("");
   }
 
   return (
