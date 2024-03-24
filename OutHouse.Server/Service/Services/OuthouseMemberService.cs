@@ -10,9 +10,12 @@ namespace OutHouse.Server.Service.Services
         IDbContext dbContext,
         IUserContext userContext,
         Guid outhouseId)
-            : OuthouseServiceBase(dbContext, userContext, outhouseId)
+            : ServiceBase(dbContext, userContext)
     {
-        
+
+        protected Guid OuthouseId { get; } = outhouseId;
+
+
         public async Task<List<MemberDto>> GetMembersAsync()
         {
             Outhouse outhouse = await GetOuthouseAsync();
@@ -43,7 +46,7 @@ namespace OutHouse.Server.Service.Services
 
         public async Task<MemberDto> RemoveMemberAsync(Guid memberId)
         {
-            Outhouse outhouse = await GetOuthouseAsync(); 
+            Outhouse outhouse = await GetOuthouseAsync();
 
             if (!outhouse.HasAdmin(UserContext.Email))
             {
@@ -55,6 +58,14 @@ namespace OutHouse.Server.Service.Services
             return member.ToDto();
         }
 
+        protected async Task<Outhouse> GetOuthouseAsync()
+        {
+            return await DbContext.Outhouses
+                .Where(x => x.Id == OuthouseId)
+                .Include(x => x.Members)
+                .SingleOrDefaultAsync()
+                    ?? throw new NotFoundException("Outhouse", OuthouseId);
+        }
     }
 
     public record struct AddMemberRequest(string MemberEmail, string MemberName, Role Role);
