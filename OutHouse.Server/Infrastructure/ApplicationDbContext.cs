@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OutHouse.Server.Domain;
+using OutHouse.Server.Domain.Members;
 using OutHouse.Server.Models;
 using OutHouse.Server.Service;
 

@@ -2,6 +2,7 @@
 using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Domain.Exceptions;
 using OutHouse.Server.Models;
+using OutHouse.Server.Domain.Members;
 
 namespace OutHouse.Server.Service.Services
 {
