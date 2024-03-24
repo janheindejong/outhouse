@@ -18,7 +18,7 @@ namespace OutHouse.Server.Tests.Domain
             using (new AssertionScope())
             {
                 booking.OuthouseId.Should().Be(outhouse.Id);
-                booking.State.Should().Be(BookingStates.Requested);
+                booking.State.Should().Be(BookingState.Requested);
                 outhouse.Bookings.Should().Contain(booking);
             }
         }
@@ -37,7 +37,7 @@ namespace OutHouse.Server.Tests.Domain
             Outhouse outhouse = GetPopulatedOuthouse();
             Booking booking = outhouse.AddBookingRequest("member@outhouse.com", "2000-01-04", "2000-01-05");
             outhouse.RejectBooking(booking.Id);
-            booking.State.Should().Be(BookingStates.Rejected);
+            booking.State.Should().Be(BookingState.Rejected);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace OutHouse.Server.Tests.Domain
             Outhouse outhouse = GetPopulatedOuthouse();
             Booking booking = outhouse.AddBookingRequest("member@outhouse.com", "2000-01-04", "2000-01-05");
             outhouse.CancelBooking(booking.Id);
-            booking.State.Should().Be(BookingStates.Cancelled);
+            booking.State.Should().Be(BookingState.Cancelled);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace OutHouse.Server.Tests.Domain
             Outhouse outhouse = GetPopulatedOuthouse();
             Booking booking = outhouse.AddBookingRequest("member@outhouse.com", "2000-01-04", "2000-01-05");
             outhouse.ApproveBooking(booking.Id);
-            booking.State.Should().Be(BookingStates.Approved);
+            booking.State.Should().Be(BookingState.Approved);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace OutHouse.Server.Tests.Domain
                 OuthouseId = outhouse.Id,
                 Start = DateOnly.Parse("2000-01-01"),
                 End = DateOnly.Parse("2000-01-03"),
-                State = BookingStates.Approved
+                State = BookingState.Approved
             });
 
             outhouse.Bookings.Add(new Booking()
@@ -101,7 +101,7 @@ namespace OutHouse.Server.Tests.Domain
                 OuthouseId = outhouse.Id,
                 Start = DateOnly.Parse("2000-01-04"),
                 End = DateOnly.Parse("2000-01-05"),
-                State = BookingStates.Requested
+                State = BookingState.Requested
             });
 
             outhouse.Bookings.Add(new Booking()
@@ -110,7 +110,7 @@ namespace OutHouse.Server.Tests.Domain
                 OuthouseId = outhouse.Id,
                 Start = DateOnly.Parse("2000-01-04"),
                 End = DateOnly.Parse("2000-01-05"),
-                State = BookingStates.Rejected
+                State = BookingState.Rejected
             });
 
             outhouse.Bookings.Add(new Booking()
@@ -119,7 +119,7 @@ namespace OutHouse.Server.Tests.Domain
                 OuthouseId = outhouse.Id,
                 Start = DateOnly.Parse("2000-01-04"),
                 End = DateOnly.Parse("2000-01-05"),
-                State = BookingStates.Cancelled
+                State = BookingState.Cancelled
             });
 
             return outhouse;

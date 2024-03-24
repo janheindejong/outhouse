@@ -28,7 +28,7 @@ namespace OutHouse.Server.Models
                 BookerEmail = bookerEmail,
                 Start = start,
                 End = end,
-                State = BookingStates.Requested
+                State = BookingState.Requested
             };
 
             Bookings.Add(booking);
@@ -39,7 +39,7 @@ namespace OutHouse.Server.Models
         {
             Booking booking = GetBookingById(bookingId);
 
-            if (booking.State != BookingStates.Requested)
+            if (booking.State != BookingState.Requested)
             {
                 throw new NotAllowedException("approve", "booking", bookingId, "Can only approve bookings with state 'Requested'");
             }
@@ -49,19 +49,19 @@ namespace OutHouse.Server.Models
                 throw new NotAllowedException("approve", "booking", bookingId, "Outhouse is already booked during the requested dates");
             }
 
-            booking.State = BookingStates.Approved;
+            booking.State = BookingState.Approved;
         }
 
         public void RejectBooking(Guid bookingId)
         {
             Booking booking = GetBookingById(bookingId);
-            booking.State = BookingStates.Rejected;
+            booking.State = BookingState.Rejected;
         }
 
         public void CancelBooking(Guid bookingId)
         {
             Booking booking = GetBookingById(bookingId);
-            booking.State = BookingStates.Cancelled;
+            booking.State = BookingState.Cancelled;
         }
 
         public bool IsFreeBetween(DateOnly start, DateOnly end)
@@ -71,7 +71,7 @@ namespace OutHouse.Server.Models
                 throw new BadRequestException("Booking start date can't be after end date");
             }
 
-            foreach (Booking booking in Bookings.Where(x => x.State == BookingStates.Approved))
+            foreach (Booking booking in Bookings.Where(x => x.State == BookingState.Approved))
             {
                 if ((start <= booking.End) && (end >= booking.Start))
                 {

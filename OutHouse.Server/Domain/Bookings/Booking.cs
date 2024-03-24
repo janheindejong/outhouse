@@ -13,9 +13,9 @@
 
         public DateOnly End { get; set; }
 
-        public BookingStates State { get; set; }
+        public BookingState State { get; set; }
 
     }
 
-    public enum BookingStates { Requested, Approved, Rejected, Cancelled }
+    public enum BookingState { Requested, Approved, Rejected, Cancelled }
 }

@@ -8,7 +8,7 @@ namespace OutHouse.Server.Service.Services
     public class OuthouseService(
             IDbContext dbContext,
             IUserContext userContext)
-                : BaseService(dbContext, userContext)
+                : ServiceBase(dbContext, userContext)
     {
 
         public async Task<OuthouseDto> GetOuthouseByIdAsync(Guid outhouseId)

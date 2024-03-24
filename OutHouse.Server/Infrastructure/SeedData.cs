@@ -32,10 +32,10 @@ namespace OutHouse.Server.Infrastructure
 
         public static List<Booking> Bookings { get; } =
         [
-            CreateBooking("5990aea7-1c7b-48b1-8d18-de00bf98a7b5", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingStates.Requested),
-            CreateBooking("9467a1f8-56be-447e-8e96-f23510b5d7ab", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingStates.Approved),
-            CreateBooking("4a241119-e25c-4d5a-9a2f-98af68abe9a3", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingStates.Rejected),
-            CreateBooking("9628c05c-8b3c-41ca-9d53-9b111217133e", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingStates.Cancelled)
+            CreateBooking("5990aea7-1c7b-48b1-8d18-de00bf98a7b5", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingState.Requested),
+            CreateBooking("9467a1f8-56be-447e-8e96-f23510b5d7ab", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingState.Approved),
+            CreateBooking("4a241119-e25c-4d5a-9a2f-98af68abe9a3", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingState.Rejected),
+            CreateBooking("9628c05c-8b3c-41ca-9d53-9b111217133e", "acdd236c-e699-434b-9024-48e614b1ae58", "2000-01-01", "2000-01-02", "member@outhouse.com", BookingState.Cancelled)
         ];
 
         private static User CreateUser(string id, string email, string password, string securityStamp)
@@ -73,7 +73,7 @@ namespace OutHouse.Server.Infrastructure
                 OuthouseId = new Guid(outhouseId)
             };
 
-        private static Booking CreateBooking(string id, string outhouseId, string start, string end, string userEmail, BookingStates state)
+        private static Booking CreateBooking(string id, string outhouseId, string start, string end, string userEmail, BookingState state)
             => new()
             {
                 Id = new Guid(id),

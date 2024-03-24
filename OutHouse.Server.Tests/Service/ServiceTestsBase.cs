@@ -2,7 +2,7 @@
 using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Service;
 
-namespace OutHouse.Server.Tests.Domain
+namespace OutHouse.Server.Tests.Service
 {
     public class MeServiceTestsBase
     {
