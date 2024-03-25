@@ -41,12 +41,12 @@ namespace OutHouse.Server.Models
 
             if (booking.State != BookingState.Requested)
             {
-                throw new NotAllowedException("approve", "booking", bookingId, "Can only approve bookings with state 'Requested'");
+                throw new ConflictException("approve", "booking", bookingId, "Can only approve bookings with state 'Requested'");
             }
 
             if (!IsFreeBetween(booking.Start, booking.End))
             {
-                throw new NotAllowedException("approve", "booking", bookingId, "Outhouse is already booked during the requested dates");
+                throw new ConflictException("approve", "booking", bookingId, "Outhouse is already booked during the requested dates");
             }
 
             booking.State = BookingState.Approved;

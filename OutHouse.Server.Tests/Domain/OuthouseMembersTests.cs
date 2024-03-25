@@ -49,7 +49,7 @@ namespace OutHouse.Server.Tests.Domain
         {
             Outhouse outhouse = GetOuthouse();
             Func<Member> act = () => outhouse.DeleteMember(owner.Id);
-            act.Should().Throw<NotAllowedException>();
+            act.Should().Throw<ConflictException>();
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace OutHouse.Server.Tests.Domain
         {
             Outhouse outhouse = GetOuthouse();
             Func<Member> act = () => outhouse.ModifyMemberRole(owner.Id, Role.Admin);
-            act.Should().Throw<NotAllowedException>();
+            act.Should().Throw<ConflictException>();
         }
 
         [TestCase("owner@outhouse.com", true)]

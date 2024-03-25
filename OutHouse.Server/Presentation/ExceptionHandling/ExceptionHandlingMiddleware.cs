@@ -26,9 +26,10 @@ namespace OutHouse.Server.Presentation.ExceptionHandling
             httpContext.Response.StatusCode = exception switch
             {
                 SeeOtherException => StatusCodes.Status303SeeOther,
-                NotFoundException => StatusCodes.Status404NotFound,
+                BadRequestException => StatusCodes.Status400BadRequest,
                 ForbiddenException => StatusCodes.Status403Forbidden,
-                NotAllowedException => StatusCodes.Status405MethodNotAllowed,
+                NotFoundException => StatusCodes.Status404NotFound,
+                ConflictException => StatusCodes.Status409Conflict,
                 _ => throw exception
             };
             var response = new
