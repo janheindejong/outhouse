@@ -18,7 +18,7 @@ namespace OutHouse.Server.Service.Mappers
 
         public static BookingDto ToDto(this Booking booking)
         {
-            return new(booking.Id, booking.BookerEmail, booking.Start, booking.End, booking.State);
+            return new(booking.Id, booking.BookerEmail, booking.Start, booking.End, booking.State.ToString());
         }
     }
 }
