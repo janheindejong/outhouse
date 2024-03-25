@@ -13,7 +13,7 @@ namespace OutHouse.Server.Presentation.ExceptionHandling
             {
                 await next(context);
             }
-            catch (Exception e)
+            catch (OuthouseException e)
             {
                 _logger.LogError(e, e.Message);
                 await HandleExceptionAsync(context, e);
@@ -25,10 +25,11 @@ namespace OutHouse.Server.Presentation.ExceptionHandling
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = exception switch
             {
+                SeeOtherException => StatusCodes.Status303SeeOther,
                 NotFoundException => StatusCodes.Status404NotFound,
-                NotAllowedException => StatusCodes.Status405MethodNotAllowed,
                 ForbiddenException => StatusCodes.Status403Forbidden,
-                _ => StatusCodes.Status500InternalServerError
+                NotAllowedException => StatusCodes.Status405MethodNotAllowed,
+                _ => throw exception
             };
             var response = new
             {

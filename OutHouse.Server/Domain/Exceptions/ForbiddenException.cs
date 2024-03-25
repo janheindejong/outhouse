@@ -1,7 +1,7 @@
 ﻿namespace OutHouse.Server.Domain.Exceptions
 {
     public class ForbiddenException(string action, string item, Guid id)
-       : Exception($"Forbidden to {action} {item} {id}")
+       : OuthouseException($"Forbidden to {action} {item} {id}")
     {
         public string Action { get => action; }
 
