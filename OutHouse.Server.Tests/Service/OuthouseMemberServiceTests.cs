@@ -6,7 +6,7 @@ using OutHouse.Server.Tests.Domain;
 
 namespace OutHouse.Server.Tests.Service
 {
-    internal class OuthouseMemberServiceTests : MeServiceTestsBase
+    internal class OuthouseMemberServiceTests : ServiceTestBase
     {
 
         private readonly Guid OuthouseId = new("acdd236c-e699-434b-9024-48e614b1ae58");
@@ -14,10 +14,10 @@ namespace OutHouse.Server.Tests.Service
         [Test]
         public async Task GetMembers()
         {
-            ApplicationDbContext dbContext = GetDbContext();
-            OuthouseMemberService service = new(dbContext, MemberContext, OuthouseId);
+            ApplicationDbContext dbContext = CreateDbContext();
+            OuthouseMemberService service = new(dbContext, MemberContext);
 
-            List<MemberDto> result = await service.GetMembersAsync();
+            List<MemberDto> result = await service.GetMembersAsync(OuthouseId);
 
             result.Should().HaveCount(3);
         }

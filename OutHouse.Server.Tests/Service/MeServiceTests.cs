@@ -5,12 +5,12 @@ using OutHouse.Server.Service.Services;
 
 namespace OutHouse.Server.Tests.Service
 {
-    public class MeServiceTests : MeServiceTestsBase
+    public class MeServiceTests : ServiceTestBase
     {
         [Test]
         public async Task GetOuthouses_Owner_ReturnsOneAsync()
         {
-            ApplicationDbContext context = GetDbContext();
+            ApplicationDbContext context = CreateDbContext();
             MeService service = new(context, OwnerContext);
 
             List<OuthouseDto> result = await service.GetOuthousesAsync();
@@ -21,7 +21,7 @@ namespace OutHouse.Server.Tests.Service
         [Test]
         public async Task GetOuthouses_Guest_ReturnsNoneAsync()
         {
-            ApplicationDbContext context = GetDbContext();
+            ApplicationDbContext context = CreateDbContext();
             MeService service = new(context, GuestContext);
 
             List<OuthouseDto> result = await service.GetOuthousesAsync();

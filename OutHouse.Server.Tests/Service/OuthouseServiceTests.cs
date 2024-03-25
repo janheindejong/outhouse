@@ -7,11 +7,10 @@ using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Models;
 using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Service.Services;
-using OutHouse.Server.Tests.Domain;
 
 namespace OutHouse.Server.Tests.Service
 {
-    internal class OuthouseServiceTests : MeServiceTestsBase
+    internal class OuthouseServiceTests : ServiceTestBase
     {
 
         private readonly Guid OuthouseId = new("acdd236c-e699-434b-9024-48e614b1ae58");
@@ -19,7 +18,7 @@ namespace OutHouse.Server.Tests.Service
         [Test]
         public async Task GetOuthouseByIdAsync()
         {
-            ApplicationDbContext dbContext = GetDbContext();
+            ApplicationDbContext dbContext = CreateDbContext();
             OuthouseService service = new(dbContext, MemberContext);
 
             OuthouseDto result = await service.GetOuthouseByIdAsync(OuthouseId);
@@ -30,7 +29,7 @@ namespace OutHouse.Server.Tests.Service
         [Test]
         public async Task GetOuthouseByIdAsync_Guest_RaisesException()
         {
-            ApplicationDbContext dbContext = GetDbContext();
+            ApplicationDbContext dbContext = CreateDbContext();
             OuthouseService service = new(dbContext, GuestContext);
 
             Func<Task<OuthouseDto>> act = () => service.GetOuthouseByIdAsync(OuthouseId);
@@ -41,7 +40,10 @@ namespace OutHouse.Server.Tests.Service
         [Test]
         public async Task CreateNewOuthouseAsync()
         {
-            ApplicationDbContext dbContext = GetDbContext();
+            ApplicationDbContext dbContext = CreateDbContext();
+
+            dbContext.Database.BeginTransaction();
+
             OuthouseService service = new(dbContext, GuestContext);
 
             CreateNewOuthouseRequest request = new()
@@ -63,12 +65,17 @@ namespace OutHouse.Server.Tests.Service
                 member?.Email.Should().Be(GuestContext.Email);
                 member?.Role.Should().Be(Role.Owner);
             }
+
+            dbContext.ChangeTracker.Clear();
         }
 
         [Test]
         public async Task RemoveOuthouseAsync()
         {
-            ApplicationDbContext dbContext = GetDbContext();
+            ApplicationDbContext dbContext = CreateDbContext();
+
+            dbContext.Database.BeginTransaction();
+
             OuthouseService service = new(dbContext, OwnerContext);
 
             OuthouseDto result = await service.RemoveOuthouseAsync(OuthouseId);
@@ -78,12 +85,14 @@ namespace OutHouse.Server.Tests.Service
                 result?.Id.Should().Be(OuthouseId);
                 dbContext.Outhouses.Should().HaveCount(1);
             }
+
+            dbContext.ChangeTracker.Clear();
         }
 
         [Test]
         public async Task RemoveOuthouseAsync_Admin_ShouldThrowForbiddenException()
         {
-            ApplicationDbContext dbContext = GetDbContext();
+            ApplicationDbContext dbContext = CreateDbContext();
             OuthouseService service = new(dbContext, AdminContext);
 
             Func<Task<OuthouseDto>> act = () => service.RemoveOuthouseAsync(OuthouseId);
