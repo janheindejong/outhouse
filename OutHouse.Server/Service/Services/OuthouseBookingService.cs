@@ -24,7 +24,7 @@ namespace OutHouse.Server.Service.Services
             return outhouse.Bookings.Select(x => x.ToDto()).ToList();
         }
 
-        public async Task<BookingDto> AddBooking(Guid outhouseId, AddBookingRequest request)
+        public async Task<BookingDto> AddBookingAsync(Guid outhouseId, AddBookingRequest request)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
             if (!outhouse.HasMember(UserContext.Email))
@@ -36,7 +36,7 @@ namespace OutHouse.Server.Service.Services
             return booking.ToDto();
         }
 
-        public async Task ApproveBooking(Guid outhouseId, Guid bookingId)
+        public async Task ApproveBookingAsync(Guid outhouseId, Guid bookingId)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
             if (!outhouse.HasAdmin(UserContext.Email))
@@ -47,7 +47,7 @@ namespace OutHouse.Server.Service.Services
             outhouse.ApproveBooking(bookingId);
         }
 
-        public async Task RejectBooking(Guid outhouseId, Guid bookingId)
+        public async Task RejectBookingAsync(Guid outhouseId, Guid bookingId)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
             if (!outhouse.HasAdmin(UserContext.Email))
@@ -58,7 +58,7 @@ namespace OutHouse.Server.Service.Services
             outhouse.RejectBooking(bookingId);
         }
 
-        public async Task CancelBooking(Guid outhouseId, Guid bookingId)
+        public async Task CancelBookingAsync(Guid outhouseId, Guid bookingId)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
             Booking booking = outhouse.GetBookingById(bookingId);

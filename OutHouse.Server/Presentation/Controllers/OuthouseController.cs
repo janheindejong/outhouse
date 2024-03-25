@@ -21,6 +21,7 @@ namespace OutHouse.Server.Presentation.Controllers
         private OuthouseService OuthouseService => new(context, UserContext);
 
         [HttpPost("")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<OuthouseDto>> CreateNew(CreateNewOuthouseRequest request)
         {
             OuthouseDto outhouse = await OuthouseService.CreateNewOuthouseAsync(request);

@@ -25,7 +25,7 @@ namespace OutHouse.Server.Tests.Service
             dbContext.Database.BeginTransaction(); 
             OuthouseBookingService service = new(dbContext, MemberContext);
             AddBookingRequest request = new("guest@outhouse.com", DateOnly.Parse("2000-01-01"), DateOnly.Parse("2000-01-02"));
-            BookingDto result = await service.AddBooking(OuthouseId, request);
+            BookingDto result = await service.AddBookingAsync(OuthouseId, request);
             using (new AssertionScope())
             {
                 result.State.Should().Be("Requested");
@@ -41,7 +41,7 @@ namespace OutHouse.Server.Tests.Service
             dbContext.Database.BeginTransaction();
             Guid bookingId = new("5990aea7-1c7b-48b1-8d18-de00bf98a7b5");
             OuthouseBookingService service = new(dbContext, AdminContext);
-            await service.ApproveBooking(OuthouseId, bookingId);
+            await service.ApproveBookingAsync(OuthouseId, bookingId);
             BookingDto booking = (await service.GetBookingsAsync(OuthouseId)).Where(x => x.Id == bookingId).First();
             booking.State.Should().Be("Approved");
             dbContext.ChangeTracker.Clear();
@@ -54,7 +54,7 @@ namespace OutHouse.Server.Tests.Service
             dbContext.Database.BeginTransaction();
             Guid bookingId = new("5990aea7-1c7b-48b1-8d18-de00bf98a7b5");
             OuthouseBookingService service = new(dbContext, AdminContext);
-            await service.RejectBooking(OuthouseId, bookingId);
+            await service.RejectBookingAsync(OuthouseId, bookingId);
             BookingDto booking = (await service.GetBookingsAsync(OuthouseId)).Where(x => x.Id == bookingId).First();
             booking.State.Should().Be("Rejected");
             dbContext.ChangeTracker.Clear();
@@ -67,7 +67,7 @@ namespace OutHouse.Server.Tests.Service
             dbContext.Database.BeginTransaction();
             Guid bookingId = new("5990aea7-1c7b-48b1-8d18-de00bf98a7b5");
             OuthouseBookingService service = new(dbContext, MemberContext);
-            await service.CancelBooking(OuthouseId, bookingId);
+            await service.CancelBookingAsync(OuthouseId, bookingId);
             BookingDto booking = (await service.GetBookingsAsync(OuthouseId)).Where(x => x.Id == bookingId).First();
             booking.State.Should().Be("Cancelled");
             dbContext.ChangeTracker.Clear();

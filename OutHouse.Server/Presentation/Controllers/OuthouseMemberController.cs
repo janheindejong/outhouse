@@ -23,10 +23,11 @@ namespace OutHouse.Server.Presentation.Controllers
 
 
         [HttpPost("/{outhouseId}/members")]
-        public async Task<ActionResult<MemberDto>> AddMember(Guid outhouseId, AddMemberRequest request)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> AddMember(Guid outhouseId, AddMemberRequest request)
         {
-            MemberDto result = await OuthouseMemberService.AddMemberAsync(outhouseId, request);
-            return CreatedAtAction(nameof(Get), nameof(OuthouseMemberController), new { outhouseId = result.Id }, result);
+            await OuthouseMemberService.AddMemberAsync(outhouseId, request);
+            return Created();
         }
 
         [HttpGet("/{outhouseId}/members")]
@@ -36,7 +37,7 @@ namespace OutHouse.Server.Presentation.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("/{outhouseId}/members{memberId}")]
+        [HttpDelete("/{outhouseId}/members/{memberId}")]
         public async Task<ActionResult<MemberDto>> Delete(Guid outhouseId, Guid memberId)
         {
             MemberDto result = await OuthouseMemberService.RemoveMemberAsync(outhouseId, memberId);
