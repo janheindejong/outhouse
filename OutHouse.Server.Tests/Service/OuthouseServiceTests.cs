@@ -2,6 +2,7 @@
 using FluentAssertions.Execution;
 using Microsoft.EntityFrameworkCore;
 using OutHouse.Server.Domain.Exceptions;
+using OutHouse.Server.Domain.Members;
 using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Models;
 using OutHouse.Server.Service.Mappers;

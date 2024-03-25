@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OutHouse.Server.Domain.Members;
 using OutHouse.Server.Models;
 
 namespace OutHouse.Server.Service

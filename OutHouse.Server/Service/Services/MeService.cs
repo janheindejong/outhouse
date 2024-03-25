@@ -6,7 +6,7 @@ namespace OutHouse.Server.Service.Services
     public class MeService(
         IDbContext dbContext,
         IUserContext userContext)
-            : BaseService(dbContext, userContext)
+            : ServiceBase(dbContext, userContext)
     {
         public async Task<List<OuthouseDto>> GetOuthousesAsync()
         {

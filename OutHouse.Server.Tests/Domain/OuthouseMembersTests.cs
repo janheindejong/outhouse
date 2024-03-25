@@ -1,10 +1,11 @@
 ﻿using FluentAssertions;
 using OutHouse.Server.Domain.Exceptions;
+using OutHouse.Server.Domain.Members;
 using OutHouse.Server.Models;
 
 namespace OutHouse.Server.Tests.Domain
 {
-    public class OuthouseTests
+    public class OuthouseMembersTests
     {
 
         private record struct MemberData(string Email, string Name, Guid Id);

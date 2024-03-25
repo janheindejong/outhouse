@@ -3,7 +3,7 @@ using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Service.Services;
 
-namespace OutHouse.Server.Tests.Domain
+namespace OutHouse.Server.Tests.Service
 {
     public class MeServiceTests : MeServiceTestsBase
     {
