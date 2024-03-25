@@ -2,7 +2,7 @@
 {
 
     public class SeeOtherException(string action, string item, Guid id)
-        : Exception($"{action} is already represented by {item} {id}")
+        : OuthouseException($"{action} is already represented by {item} {id}")
     {
         public string Action { get => action; }
 
