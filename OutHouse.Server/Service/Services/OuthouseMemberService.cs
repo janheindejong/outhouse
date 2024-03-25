@@ -8,21 +8,17 @@ namespace OutHouse.Server.Service.Services
 {
     public class OuthouseMemberService(
         IDbContext dbContext,
-        IUserContext userContext,
-        Guid outhouseId)
+        IUserContext userContext)
             : ServiceBase(dbContext, userContext)
     {
 
-        protected Guid OuthouseId { get; } = outhouseId;
-
-
-        public async Task<List<MemberDto>> GetMembersAsync()
+        public async Task<List<MemberDto>> GetMembersAsync(Guid outhouseId)
         {
-            Outhouse outhouse = await GetOuthouseAsync();
+            Outhouse outhouse = await GetOuthouseAsync(outhouseId);
 
             if (!outhouse.HasMember(UserContext.Email))
             {
-                throw new ForbiddenException("get members of", "Outhouse", OuthouseId);
+                throw new ForbiddenException("get members of", "Outhouse", outhouseId);
             }
 
             return outhouse.Members
@@ -30,13 +26,13 @@ namespace OutHouse.Server.Service.Services
                 .ToList();
         }
 
-        public async Task<MemberDto> AddMemberAsync(AddMemberRequest request)
+        public async Task<MemberDto> AddMemberAsync(Guid outhouseId, AddMemberRequest request)
         {
-            Outhouse outhouse = await GetOuthouseAsync();
+            Outhouse outhouse = await GetOuthouseAsync(outhouseId);
 
             if (!outhouse.HasAdmin(UserContext.Email))
             {
-                throw new ForbiddenException("add members to", "Outhouse", OuthouseId);
+                throw new ForbiddenException("add members to", "Outhouse", outhouseId);
             }
 
             Member member = outhouse.AddMember(request.MemberEmail, request.MemberName, request.Role);
@@ -44,13 +40,13 @@ namespace OutHouse.Server.Service.Services
             return member.ToDto();
         }
 
-        public async Task<MemberDto> RemoveMemberAsync(Guid memberId)
+        public async Task<MemberDto> RemoveMemberAsync(Guid outhouseId, Guid memberId)
         {
-            Outhouse outhouse = await GetOuthouseAsync();
+            Outhouse outhouse = await GetOuthouseAsync(outhouseId);
 
             if (!outhouse.HasAdmin(UserContext.Email))
             {
-                throw new ForbiddenException("remove members from", "Outhouse", OuthouseId);
+                throw new ForbiddenException("remove members from", "Outhouse", outhouseId);
             }
 
             Member member = outhouse.DeleteMember(memberId);
@@ -58,13 +54,13 @@ namespace OutHouse.Server.Service.Services
             return member.ToDto();
         }
 
-        protected async Task<Outhouse> GetOuthouseAsync()
+        protected async Task<Outhouse> GetOuthouseAsync(Guid outhouseId)
         {
             return await DbContext.Outhouses
-                .Where(x => x.Id == OuthouseId)
+                .Where(x => x.Id == outhouseId)
                 .Include(x => x.Members)
                 .SingleOrDefaultAsync()
-                    ?? throw new NotFoundException("Outhouse", OuthouseId);
+                    ?? throw new NotFoundException("Outhouse", outhouseId);
         }
     }
 

@@ -18,26 +18,26 @@ namespace OutHouse.Server.Presentation.Controllers
 
         private UserContext UserContext => new(HttpContext);
 
-        private OuthouseService Service => new(context, UserContext);
+        private OuthouseService OuthouseService => new(context, UserContext);
 
         [HttpPost("")]
         public async Task<ActionResult<OuthouseDto>> CreateNew(CreateNewOuthouseRequest request)
         {
-            OuthouseDto outhouse = await Service.CreateNewOuthouseAsync(request);
+            OuthouseDto outhouse = await OuthouseService.CreateNewOuthouseAsync(request);
             return CreatedAtAction(nameof(Get), nameof(OuthouseController), new { id = outhouse.Id }, outhouse);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OuthouseDto>> Get(Guid id)
         {
-            OuthouseDto result = await Service.GetOuthouseByIdAsync(id);
+            OuthouseDto result = await OuthouseService.GetOuthouseByIdAsync(id);
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<OuthouseDto>> Delete(Guid id)
         {
-            OuthouseDto result = await Service.RemoveOuthouseAsync(id);
+            OuthouseDto result = await OuthouseService.RemoveOuthouseAsync(id);
             return Ok(result);
         }
     }

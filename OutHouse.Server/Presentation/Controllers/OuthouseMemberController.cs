@@ -4,41 +4,42 @@ using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Service.Services;
 using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Presentation.Identity;
+using OutHouse.Server.Models;
 
 namespace OutHouse.Server.Presentation.Controllers
 {
     [Authorize]
-    [Route("api/outhouses/{outhouseId}/members")]
+    [Route("api/outhouses")]
     public class OuthouseMemberController(
         ILogger<OuthouseMemberController> logger,
-        ApplicationDbContext context, 
-        Guid outhouseId)
+        ApplicationDbContext dbContext)
             : ControllerBase
     {
         private readonly ILogger<OuthouseMemberController> _logger = logger;
         
         private UserContext UserContext => new(HttpContext);
 
-        private OuthouseMemberService Service => new(context, UserContext, outhouseId);
+        private OuthouseMemberService OuthouseMemberService => new(dbContext, UserContext);
 
-        [HttpPost("")]
-        public async Task<ActionResult<MemberDto>> AddMember(AddMemberRequest request)
+
+        [HttpPost("/{outhouseId}/members")]
+        public async Task<ActionResult<MemberDto>> AddMember(Guid outhouseId, AddMemberRequest request)
         {
-            MemberDto result = await Service.AddMemberAsync(request);
+            MemberDto result = await OuthouseMemberService.AddMemberAsync(outhouseId, request);
             return CreatedAtAction(nameof(Get), nameof(OuthouseMemberController), new { outhouseId = result.Id }, result);
         }
 
-        [HttpGet("")]
-        public async Task<ActionResult<List<MemberDto>>> Get()
+        [HttpGet("/{outhouseId}/members")]
+        public async Task<ActionResult<List<MemberDto>>> Get(Guid outhouseId)
         {
-            List<MemberDto> result = await Service.GetMembersAsync();
+            List<MemberDto> result = await OuthouseMemberService.GetMembersAsync(outhouseId);
             return Ok(result);
         }
 
-        [HttpDelete("{memberId}")]
-        public async Task<ActionResult<MemberDto>> Delete(Guid memberId)
+        [HttpDelete("/{outhouseId}/members{memberId}")]
+        public async Task<ActionResult<MemberDto>> Delete(Guid outhouseId, Guid memberId)
         {
-            MemberDto result = await Service.RemoveMemberAsync(memberId);
+            MemberDto result = await OuthouseMemberService.RemoveMemberAsync(outhouseId, memberId);
             return Ok(result);
         }
     }

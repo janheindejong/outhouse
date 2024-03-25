@@ -32,10 +32,12 @@ namespace OutHouse.Server.Presentation.ExceptionHandling
                 ConflictException => StatusCodes.Status409Conflict,
                 _ => throw exception
             };
+
             var response = new
             {
                 error = exception.Message
             };
+
             await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
