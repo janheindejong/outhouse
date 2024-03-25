@@ -13,8 +13,6 @@ namespace OutHouse.Server.Tests.Service
     internal class OuthouseServiceTests : ServiceTestBase
     {
 
-        private readonly Guid OuthouseId = new("acdd236c-e699-434b-9024-48e614b1ae58");
-
         [Test]
         public async Task GetOuthouseByIdAsync()
         {

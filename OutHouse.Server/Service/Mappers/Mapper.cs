@@ -13,7 +13,7 @@ namespace OutHouse.Server.Service.Mappers
 
         public static MemberDto ToDto(this Member member)
         {
-            return new(member.Id, member.Email, member.Name);
+            return new(member.Id, member.Email, member.Name, member.Role.ToString());
         }
 
         public static BookingDto ToDto(this Booking booking)

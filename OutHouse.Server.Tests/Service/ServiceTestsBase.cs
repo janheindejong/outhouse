@@ -25,6 +25,8 @@ namespace OutHouse.Server.Tests.Service
 
         protected UserContext GuestContext { get; } = new("guest@outhouse.com");
 
+        protected static Guid OuthouseId => new("acdd236c-e699-434b-9024-48e614b1ae58");
+
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
