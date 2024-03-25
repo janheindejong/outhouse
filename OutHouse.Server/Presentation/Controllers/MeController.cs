@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Service.Services;
 using OutHouse.Server.Infrastructure;
+using OutHouse.Server.Presentation.Identity;
 
 namespace OutHouse.Server.Presentation.Controllers
 {
@@ -11,18 +12,21 @@ namespace OutHouse.Server.Presentation.Controllers
     public class MeController(
         ILogger<MeController> logger,
         ApplicationDbContext dbContext)
-        : ApplicationBaseController
+        : ControllerBase
     {
 
         private readonly ILogger<MeController> logger = logger;
+
+        private UserContext UserContext => new(HttpContext);
+
         private MeService MeService => new(dbContext, UserContext);
 
         [HttpGet("outhouses")]
         public async Task<ActionResult<List<OuthouseDto>>> GetHouses()
         {
-            return await ExecuteWithExceptionHandling(
-                MeService.GetOuthousesAsync(),
-                new OkResultFactory<List<OuthouseDto>>());
+
+            List<OuthouseDto> outhouses = await MeService.GetOuthousesAsync();
+            return Ok(outhouses);
         }
     }
 }

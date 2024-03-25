@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Service.Services;
 using OutHouse.Server.Infrastructure;
+using OutHouse.Server.Presentation.Identity;
 
 namespace OutHouse.Server.Presentation.Controllers
 {
@@ -12,34 +13,33 @@ namespace OutHouse.Server.Presentation.Controllers
         ILogger<OuthouseMemberController> logger,
         ApplicationDbContext context, 
         Guid outhouseId)
-            : ApplicationBaseController
+            : ControllerBase
     {
         private readonly ILogger<OuthouseMemberController> _logger = logger;
+        
+        private UserContext UserContext => new(HttpContext);
 
         private OuthouseMemberService Service => new(context, UserContext, outhouseId);
 
         [HttpPost("")]
         public async Task<ActionResult<MemberDto>> AddMember(AddMemberRequest request)
         {
-            return await ExecuteWithExceptionHandling(
-                Service.AddMemberAsync(request),
-                new CreatedAtActionResultFactory<MemberDto>(nameof(Get), this));
+            MemberDto result = await Service.AddMemberAsync(request);
+            return CreatedAtAction(nameof(Get), nameof(OuthouseMemberController), new { outhouseId = result.Id }, result);
         }
 
         [HttpGet("")]
         public async Task<ActionResult<List<MemberDto>>> Get()
         {
-            return await ExecuteWithExceptionHandling(
-                Service.GetMembersAsync(),
-                new OkResultFactory<List<MemberDto>>());
+            List<MemberDto> result = await Service.GetMembersAsync();
+            return Ok(result);
         }
 
         [HttpDelete("{memberId}")]
         public async Task<ActionResult<MemberDto>> Delete(Guid memberId)
         {
-            return await ExecuteWithExceptionHandling(
-                Service.RemoveMemberAsync(memberId), 
-                new OkResultFactory<MemberDto>());
+            MemberDto result = await Service.RemoveMemberAsync(memberId);
+            return Ok(result);
         }
     }
 }
