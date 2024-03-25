@@ -16,5 +16,14 @@ namespace OutHouse.Server.Service.Services
                 .Select(x => x.Outhouse.ToDto())
                 .ToListAsync();
         }
+
+        public async Task<List<BookingDto>> GetBookingsAsync()
+        {
+            return await DbContext
+                .Bookings
+                .Where(x => x.BookerEmail == UserContext.Email)
+                .Select(x => x.ToDto())
+                .ToListAsync();
+        }
     }
 }

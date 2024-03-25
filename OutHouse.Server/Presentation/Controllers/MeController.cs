@@ -28,5 +28,13 @@ namespace OutHouse.Server.Presentation.Controllers
             List<OuthouseDto> outhouses = await MeService.GetOuthousesAsync();
             return Ok(outhouses);
         }
+
+        [HttpGet("bookings")]
+        public async Task<ActionResult<List<BookingDto>>> GetBookings()
+        {
+
+            List<BookingDto> bookings = await MeService.GetBookingsAsync();
+            return Ok(bookings);
+        }
     }
 }
