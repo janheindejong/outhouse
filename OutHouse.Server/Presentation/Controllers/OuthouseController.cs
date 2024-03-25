@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OutHouse.Server.Service.Mappers;
 using OutHouse.Server.Service.Services;
 using OutHouse.Server.Infrastructure;
+using OutHouse.Server.Presentation.Identity;
 
 namespace OutHouse.Server.Presentation.Controllers
 {
@@ -11,34 +12,33 @@ namespace OutHouse.Server.Presentation.Controllers
     public class OuthouseController(
         ILogger<OuthouseController> logger,
         ApplicationDbContext context)
-            : ApplicationBaseController
+            : ControllerBase
     {
         private readonly ILogger<OuthouseController> _logger = logger;
+
+        private UserContext UserContext => new(HttpContext);
 
         private OuthouseService Service => new(context, UserContext);
 
         [HttpPost("")]
         public async Task<ActionResult<OuthouseDto>> CreateNew(CreateNewOuthouseRequest request)
         {
-            return await ExecuteWithExceptionHandling(
-                Service.CreateNewOuthouseAsync(request),
-                new CreatedAtActionResultFactory<OuthouseDto>(nameof(Get), this));
+            OuthouseDto outhouse = await Service.CreateNewOuthouseAsync(request);
+            return CreatedAtAction(nameof(Get), nameof(OuthouseController), new { id = outhouse.Id }, outhouse);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OuthouseDto>> Get(Guid id)
         {
-            return await ExecuteWithExceptionHandling(
-                Service.GetOuthouseByIdAsync(id),
-                new OkResultFactory<OuthouseDto>());
+            OuthouseDto result = await Service.GetOuthouseByIdAsync(id);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<OuthouseDto>> Delete(Guid id)
         {
-            return await ExecuteWithExceptionHandling(
-                Service.RemoveOuthouseAsync(id), 
-                new OkResultFactory<OuthouseDto>());
+            OuthouseDto result = await Service.RemoveOuthouseAsync(id);
+            return Ok(result);
         }
     }
 }

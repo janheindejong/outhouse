@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OutHouse.Server.Infrastructure;
 using OutHouse.Server.Domain;
+using OutHouse.Server.Presentation.ExceptionHandling;
 
 namespace OutHouse.Server
 {
@@ -26,6 +27,9 @@ namespace OutHouse.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Add exception handling
+            builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
             // Azure Logging; this is necessary for logs to show up in the Azure App Service
             builder.Logging.AddAzureWebAppDiagnostics();
 
@@ -39,6 +43,9 @@ namespace OutHouse.Server
             // Add endpoints
             app.MapGroup("/api").MapIdentityApi<User>();
             app.MapControllers();
+
+            // Add exception handling
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {
