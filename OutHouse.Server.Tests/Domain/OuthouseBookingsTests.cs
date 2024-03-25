@@ -64,7 +64,7 @@ namespace OutHouse.Server.Tests.Domain
             Outhouse outhouse = GetPopulatedOuthouse();
             Booking booking = outhouse.AddBookingRequest("member@outhouse.com", "2000-01-01", "2000-01-03");
             Action act = () => outhouse.ApproveBooking(booking.Id);
-            act.Should().Throw<NotAllowedException>();
+            act.Should().Throw<ConflictException>();
         }
 
         [TestCase("2000-01-04", "2000-01-05", ExpectedResult = true)]

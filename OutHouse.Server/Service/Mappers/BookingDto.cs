@@ -2,5 +2,5 @@
 
 namespace OutHouse.Server.Service.Mappers
 {
-    public record class BookingDto(Guid Id, string BookerEmail, DateOnly Start, DateOnly End, BookingState State) : IEntity;
+    public record class BookingDto(Guid Id, string BookerEmail, DateOnly Start, DateOnly End, string State) : IEntity;
 }

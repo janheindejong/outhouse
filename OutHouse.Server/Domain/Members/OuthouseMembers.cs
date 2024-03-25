@@ -34,7 +34,7 @@ namespace OutHouse.Server.Models
                 ?? throw new NotFoundException("Member", id);
             if (member.Role == Role.Owner)
             {
-                throw new NotAllowedException("delete", "Member", id, "Can't delete owner");
+                throw new ConflictException("delete", "Member", id, "Can't delete owner");
             }
 
             Members.Remove(member);
@@ -47,7 +47,7 @@ namespace OutHouse.Server.Models
                 ?? throw new NotFoundException("Member", memberId);
             if (member.Role == Role.Owner && newRole != Role.Owner)
             {
-                throw new NotAllowedException("delete", "Member", memberId, "Can't modify owner role");
+                throw new ConflictException("delete", "Member", memberId, "Can't modify owner role");
             }
 
             member.Role = newRole;

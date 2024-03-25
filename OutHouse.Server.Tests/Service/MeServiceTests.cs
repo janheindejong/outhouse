@@ -5,12 +5,12 @@ using OutHouse.Server.Service.Services;
 
 namespace OutHouse.Server.Tests.Service
 {
-    public class MeServiceTests : MeServiceTestsBase
+    public class MeServiceTests : ServiceTestBase
     {
         [Test]
-        public async Task GetOuthouses_Owner_ReturnsOneAsync()
+        public async Task GetOuthouses()
         {
-            ApplicationDbContext context = GetDbContext();
+            ApplicationDbContext context = CreateDbContext();
             MeService service = new(context, OwnerContext);
 
             List<OuthouseDto> result = await service.GetOuthousesAsync();
@@ -19,12 +19,34 @@ namespace OutHouse.Server.Tests.Service
         }
 
         [Test]
-        public async Task GetOuthouses_Guest_ReturnsNoneAsync()
+        public async Task GetOuthouses_Guest_ReturnsNone()
         {
-            ApplicationDbContext context = GetDbContext();
+            ApplicationDbContext context = CreateDbContext();
             MeService service = new(context, GuestContext);
 
             List<OuthouseDto> result = await service.GetOuthousesAsync();
+
+            result.Should().BeEmpty();
+        }
+
+        [Test]
+        public async Task GetBookings()
+        {
+            ApplicationDbContext context = CreateDbContext();
+            MeService service = new(context, MemberContext);
+
+            List<BookingDto> result = await service.GetBookingsAsync();
+
+            result.Should().HaveCount(3);
+        }
+
+        [Test]
+        public async Task GetBookings_Guest_ReturnsNone()
+        {
+            ApplicationDbContext context = CreateDbContext();
+            MeService service = new(context, GuestContext);
+
+            List<BookingDto> result = await service.GetBookingsAsync();
 
             result.Should().BeEmpty();
         }

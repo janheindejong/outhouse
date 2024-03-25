@@ -25,10 +25,10 @@ class Member {
 
 class Booking {
     +Guid Id
-    +Date FromDate
-    +Date ToDate
-    +string Email
-    +bool IsApproved
+    +Date Start
+    +Date End
+    +string BookerEmail
+    +BookingState State
 }
 
 class User {
@@ -119,7 +119,7 @@ We use Microsoft ASP.NET Core Identity to manage user information, see [document
 MeController: 
 - `GET api/me` - Returns user information
 - `GET api/me/outhouses` - Returns list of houses user is member of
-- `GET api/me/bookings` - Returns list of all bookings of user (NOT IMPLEMENTED YET)
+- `GET api/me/bookings` - Returns list of all bookings of user
 
 OuthouseController
 - `POST api/outhouse` - create new outhouse
@@ -129,6 +129,8 @@ OuthouseMemberController
 - `GET,POST api/outhouses/{id}/members` - get members of house, or create new
 - `DELETE api/outhouses/{id}/members/{id}` - delete member
 
-OuthouseBookingController (NOT IMPLEMENTED YET)
+OuthouseBookingController
 - `GET,POST api/outhouses/{id}/bookings` - get bookings of house, or create new
-- `PUT,DELETE api/outhouses/{id}/bookings/{id}` - modify or delete booking
+- `POST api/outhouses/{id}/bookings/{id}:accept` - accept booking
+- `POST api/outhouses/{id}/bookings/{id}:reject` - reject booking
+- `POST api/outhouses/{id}/bookings/{id}:cancel` - cancel booking

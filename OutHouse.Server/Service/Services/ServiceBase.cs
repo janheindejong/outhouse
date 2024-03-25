@@ -1,4 +1,4 @@
-﻿namespace OutHouse.Server.Service
+﻿namespace OutHouse.Server.Service.Services
 {
     public class ServiceBase(IDbContext dbContext, IUserContext userContext)
     {
