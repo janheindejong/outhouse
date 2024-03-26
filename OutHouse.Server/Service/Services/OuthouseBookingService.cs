@@ -27,12 +27,14 @@ namespace OutHouse.Server.Service.Services
         public async Task<BookingDto> AddBookingAsync(Guid outhouseId, AddBookingRequest request)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
+
             if (!outhouse.HasMember(UserContext.Email))
             {
                 throw new ForbiddenException("request bookings of", "Outhouse", outhouseId);
             }
 
             Booking booking = outhouse.AddBookingRequest(request.BookerEmail, request.Start, request.End);
+            await DbContext.SaveChangesAsync();
             return booking.ToDto();
         }
 
@@ -45,6 +47,7 @@ namespace OutHouse.Server.Service.Services
             }
 
             outhouse.ApproveBooking(bookingId);
+            await DbContext.SaveChangesAsync();
         }
 
         public async Task RejectBookingAsync(Guid outhouseId, Guid bookingId)
@@ -56,18 +59,20 @@ namespace OutHouse.Server.Service.Services
             }
 
             outhouse.RejectBooking(bookingId);
+            await DbContext.SaveChangesAsync();
         }
 
-        public async Task CancelBookingAsync(Guid outhouseId, Guid bookingId)
+        public async Task DeleteBookingAsync(Guid outhouseId, Guid bookingId)
         {
             Outhouse outhouse = await GetOuthouseAsync(outhouseId);
             Booking booking = outhouse.GetBookingById(bookingId);
-            if (booking.BookerEmail != UserContext.Email)
+            if (!(booking.BookerEmail == UserContext.Email || outhouse.HasAdmin(UserContext.Email)))
             {
-                throw new ForbiddenException("cancel", "Booking", bookingId);
+                throw new ForbiddenException("delete", "Booking", bookingId);
             }
 
-            outhouse.CancelBooking(bookingId);
+            outhouse.DeleteBooking(bookingId);
+            await DbContext.SaveChangesAsync();
         }
 
         private async Task<Outhouse> GetOuthouseAsync(Guid outhouseId)

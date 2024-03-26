@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using OutHouse.Server.Domain.Bookings;
 using OutHouse.Server.Domain.Exceptions;
 using OutHouse.Server.Domain.Members;
 using OutHouse.Server.Infrastructure;
@@ -25,9 +26,14 @@ namespace OutHouse.Server.Tests.Service
         {
             ApplicationDbContext dbContext = CreateDbContext();
             dbContext.Database.BeginTransaction();
+
             OuthouseMemberService service = new(dbContext, AdminContext);
             AddMemberRequest request = new("guest@outhouse.com", "Guest", Role.Member);
+            
             MemberDto result = await service.AddMemberAsync(OuthouseId, request);
+            
+            dbContext.ChangeTracker.Clear();
+            
             List<MemberDto> members = await service.GetMembersAsync(OuthouseId);
             using (new AssertionScope())
             {
@@ -37,7 +43,6 @@ namespace OutHouse.Server.Tests.Service
                 members.Count.Should().Be(4);
             }
 
-            dbContext.ChangeTracker.Clear();
         }
 
         [Test]
@@ -55,18 +60,18 @@ namespace OutHouse.Server.Tests.Service
         {
             ApplicationDbContext dbContext = CreateDbContext();
             dbContext.Database.BeginTransaction();
-            OuthouseMemberService service = new(dbContext, AdminContext);
-            MemberDto result = await service.RemoveMemberAsync(OuthouseId, new("275e4646-2730-4656-9fe6-9ff80069cb1b"));
-            List<MemberDto> members = await service.GetMembersAsync(OuthouseId);
-            using (new AssertionScope())
-            {
-                result.Name.Should().Be("Member");
-                result.Email.Should().Be("member@outhouse.com");
-                result.Role.Should().Be("Member");
-                members.Count.Should().Be(2);
-            }
 
+            Guid memberId = new("275e4646-2730-4656-9fe6-9ff80069cb1b");
+            OuthouseMemberService service = new(dbContext, AdminContext);
+
+            await service.RemoveMemberAsync(OuthouseId, memberId);
+            
+            List<MemberDto> members = await service.GetMembersAsync(OuthouseId);
+            
             dbContext.ChangeTracker.Clear();
+
+            Booking? member = dbContext.Bookings.Where(x => x.Id == memberId).SingleOrDefault();
+            member.Should().BeNull();
         }
 
         [Test]

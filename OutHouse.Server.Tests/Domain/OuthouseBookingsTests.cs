@@ -41,12 +41,12 @@ namespace OutHouse.Server.Tests.Domain
         }
 
         [Test]
-        public void CancelBooking()
+        public void DeleteBooking()
         {
             Outhouse outhouse = GetPopulatedOuthouse();
             Booking booking = outhouse.AddBookingRequest("member@outhouse.com", "2000-01-04", "2000-01-05");
-            outhouse.CancelBooking(booking.Id);
-            booking.State.Should().Be(BookingState.Cancelled);
+            outhouse.DeleteBooking(booking.Id);
+            outhouse.Bookings.Should().HaveCount(3);
         }
 
         [Test]
@@ -111,15 +111,6 @@ namespace OutHouse.Server.Tests.Domain
                 Start = DateOnly.Parse("2000-01-04"),
                 End = DateOnly.Parse("2000-01-05"),
                 State = BookingState.Rejected
-            });
-
-            outhouse.Bookings.Add(new Booking()
-            {
-                Id = Guid.NewGuid(),
-                OuthouseId = outhouse.Id,
-                Start = DateOnly.Parse("2000-01-04"),
-                End = DateOnly.Parse("2000-01-05"),
-                State = BookingState.Cancelled
             });
 
             return outhouse;
