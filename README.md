@@ -133,4 +133,4 @@ OuthouseBookingController
 - `GET,POST api/outhouses/{id}/bookings` - get bookings of house, or create new
 - `POST api/outhouses/{id}/bookings/{id}:accept` - accept booking
 - `POST api/outhouses/{id}/bookings/{id}:reject` - reject booking
-- `POST api/outhouses/{id}/bookings/{id}:cancel` - cancel booking
+- `DELETE api/outhouses/{id}/bookings/{id}` - delete booking

@@ -21,5 +21,5 @@ namespace OutHouse.Server.Domain.Bookings
 
     }
 
-    public enum BookingState { Requested, Approved, Rejected, Cancelled }
+    public enum BookingState { Requested, Approved, Rejected }
 }

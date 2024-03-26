@@ -37,7 +37,7 @@ namespace OutHouse.Server.Tests.Service
 
             List<BookingDto> result = await service.GetBookingsAsync();
 
-            result.Should().HaveCount(3);
+            result.Should().HaveCount(5);
         }
 
         [Test]

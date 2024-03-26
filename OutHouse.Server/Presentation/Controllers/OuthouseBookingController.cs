@@ -52,10 +52,10 @@ namespace OutHouse.Server.Presentation.Controllers
             return Ok();
         }
 
-        [HttpPost("/{outhouseId}/members/{bookingId}:cancel")]
+        [HttpDelete("/{outhouseId}/members/{bookingId}")]
         public async Task<ActionResult> CancelBooking(Guid outhouseId, Guid bookingId)
         {
-            await OuthouseBookingService.CancelBookingAsync(outhouseId, bookingId);
+            await OuthouseBookingService.DeleteBookingAsync(outhouseId, bookingId);
             return Ok();
         }
     }

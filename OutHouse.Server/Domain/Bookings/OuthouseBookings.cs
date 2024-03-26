@@ -23,7 +23,6 @@ namespace OutHouse.Server.Models
             
             Booking booking = new()
             {
-                Id = Guid.NewGuid(),
                 OuthouseId = Id,
                 BookerEmail = bookerEmail,
                 Start = start,
@@ -58,10 +57,10 @@ namespace OutHouse.Server.Models
             booking.State = BookingState.Rejected;
         }
 
-        public void CancelBooking(Guid bookingId)
+        public void DeleteBooking(Guid bookingId)
         {
             Booking booking = GetBookingById(bookingId);
-            booking.State = BookingState.Cancelled;
+            Bookings.Remove(booking);
         }
 
         public bool IsFreeBetween(DateOnly start, DateOnly end)
@@ -84,7 +83,7 @@ namespace OutHouse.Server.Models
 
         public Booking GetBookingById(Guid id)
         {
-            return Bookings.Where(x => x.Id == id).FirstOrDefault()
+            return Bookings.Where(x => x.Id == id).SingleOrDefault()
                 ?? throw new NotFoundException("Booking", id);
         }
     }
